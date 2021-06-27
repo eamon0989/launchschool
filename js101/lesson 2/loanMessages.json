@@ -1,0 +1,11 @@
+{
+  "en" : {
+    "amount" : "How much would you like to borrow? ",
+    "annualRate" : "What is the Annual Percentage Rate? Example: 5 for 5% or 2.5 for 2.5%",
+    "howManyYears" : "Over how many years do you intend to pay the loan? ",
+    "invalid" : "That is not a valid amount, please enter a valid amount ",
+    "validPercentage" : "Please enter a positive interest rate ",
+    "validTerm" : "Please enter a positive loan term value ",
+    "monthlyPay" : "The monthly payment will be $${monthlyPay}"
+  }
+}

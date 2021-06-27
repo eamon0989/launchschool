@@ -1,0 +1,26 @@
+START
+
+SET number1 and number2
+SET function 
+SET sum = number1 + number2
+PRINT sum
+
+END
+
+a function that takes an array of strings, and returns a string that is all those strings concatenated together
+
+Take the array and pass it as an argument to the function.
+SET string = ''
+Set up a forEach loop
+forEach string in the array, concatenate it to the end of our string variable
+return string
+
+
+a function that takes an array of integers, and returns a new array with every other element
+
+Create a function, and pass in the array of integers as an argument.
+Create a new empty array.
+Use a for loop to iterate over the array of integers.
+If i (the array index) is an even number, continue
+If i is an odd number, push it to the new array
+Return the new array

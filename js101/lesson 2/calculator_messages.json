@@ -1,0 +1,21 @@
+
+{
+  "english" : {
+    "welcome" : "Welcome to Calculator",
+    "first" : "What's the first number? ",
+    "invalid" : "Hmm... that doesn't look like a valid number.",
+    "second" : "What's the second number? ",
+    "operation" : "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+    "choose" : "Must choose 1, 2, 3 or 4",
+    "another" : "Would you like to perform another operation? (y/n)"
+  },
+  "spanish" : {
+    "welcome" : "Bienvenido",
+    "first" : "Teclea el primer numero ",
+    "invalid" : "Eso no es un numero valido.",
+    "second" : "Teclea el segundo numero ",
+    "operation" : "¿Quieres \n1) Sumar 2) Restar 3) Multiplicar 4) Dividir?",
+    "choose" : "Debes teclear 1, 2, 3 or 4",
+    "another" : "¿Quieres realizar otra operacion? (y/n)"
+  }
+}
