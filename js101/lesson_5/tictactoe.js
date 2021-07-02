@@ -3,10 +3,11 @@ const readline = require("readline-sync");
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
-const WINNING_SCORE = 5;
+const WINNING_SCORE = 3;
 const YES_NO_ANSWERS = ['yes', 'y', 'no', 'n'];
 const WHO_STARTS = ['player', 'computer', 'p', 'c'];
 const CURRENT_PLAYER = [];
+const GAME_COUNT = [0];
 const WINNING_LINES = [
   ['a1', 'b1', 'c1'], ['a2', 'b2', 'c2'], ['a3', 'b3', 'c3'], // rows
   ['a1', 'a2', 'a3'], ['b1', 'b2', 'b3'], ['c1', 'c2', 'c3'], // columns
@@ -189,12 +190,23 @@ function ticTacToe() {
     Computer: 0,
     roundCount: 1,
   };
+
+  welcomeMessage();
   askWhoStarts();
   gameMechanics(score);
 }
 
+function welcomeMessage() {
+  if (GAME_COUNT[0] === 0) {
+    console.clear();
+    prompt(`Welcome to TicTacToe. First player to ${WINNING_SCORE} wins.`);
+  }
+}
+
 function askWhoStarts() {
-  console.clear();
+  if (GAME_COUNT[0] !== 0) {
+    console.clear();
+  }
   prompt(`Who starts, you or the computer? type 'player' or 'computer'`);
   let starter = readline.question().toLowerCase();
   while (!WHO_STARTS.includes(starter)) {
@@ -221,6 +233,7 @@ function gameMechanics(score) {
     let winner = checkIfGameIsOver(score);
     if (winner) {
       declareOverallGameWinner(winner);
+      GAME_COUNT[0] += 1;
       return false;
     }
     let roundWinner = someoneWonRound(board);
