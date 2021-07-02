@@ -5,12 +5,13 @@ const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const WINNING_SCORE = 5;
 const YES_NO_ANSWERS = ['yes', 'y', 'no', 'n'];
+const WHO_STARTS = ['player', 'computer', 'p', 'c'];
+const CURRENT_PLAYER = [];
 const WINNING_LINES = [
   ['a1', 'b1', 'c1'], ['a2', 'b2', 'c2'], ['a3', 'b3', 'c3'], // rows
   ['a1', 'a2', 'a3'], ['b1', 'b2', 'b3'], ['c1', 'c2', 'c3'], // columns
   ['a1', 'b2', 'c3'], ['a3', 'b2', 'c1']             // diagonals
 ];
-const WHO_STARTS = ['player', 'computer', 'p', 'c', ''];
 
 function prompt(msg) {
   console.log(`=> ${msg}`);
@@ -19,10 +20,12 @@ function prompt(msg) {
 function displayBoard(board) {
   console.clear();
 
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
-  // line 24 and 36 is the only way to get enough lines without an eslint error
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}
+  `);
+  // line 24, 26, 27 and 40 is the only way to get enough lines without
+  // an eslint error, I wanted the special grid layout
   console.log(`  |  a  |  b  |  c  |
-  |-----+-----+-----|`); 
+  |-----+-----+-----|`);
   console.log('  |     |     |     |');
   console.log(`1 |  ${board['a1']}  |  ${board['b1']}  |  ${board['c1']}  |`);
   console.log('  |     |     |     |');
@@ -63,32 +66,13 @@ function playerChoosesSquare(board) {
 
   while (true) {
     prompt(`Choose a square: ${joinOr(emptySquares(board))}`);
-    square = readline.question().trim();
+    square = readline.question().trim().toLowerCase();
     if (emptySquares(board).includes(square)) break;
 
     prompt("Sorry, that's not a valid choice.");
   }
 
   board[square] = HUMAN_MARKER;
-}
-
-function joinOr(array, char = ', ', string = 'or' ) {
-  let returnString = '';
-
-  if (array.length === 2) {
-    return `${String(array[0])} ${string} ${String(array[1])}`;
-  }
-
-  for (let index = 0; index < array.length; index += 1) {
-    if (index === 0) {
-      returnString += array[index];
-    } else if (index === array.length - 1) {
-      returnString += `${char}${string} ${String(array[index])}`;
-    } else {
-      returnString += `${char}${String(array[index])}`;
-    }
-  }
-  return returnString;
 }
 
 function computerChoosesSquare(board) {
@@ -131,6 +115,25 @@ function findAtRiskSquare(line, board, marker) {
   }
 
   return null;
+}
+
+function joinOr(array, char = ', ', string = 'or' ) {
+  let returnString = '';
+
+  if (array.length === 2) {
+    return `${String(array[0])} ${string} ${String(array[1])}`;
+  }
+
+  for (let index = 0; index < array.length; index += 1) {
+    if (index === 0) {
+      returnString += array[index];
+    } else if (index === array.length - 1) {
+      returnString += `${char}${string} ${String(array[index])}`;
+    } else {
+      returnString += `${char}${String(array[index])}`;
+    }
+  }
+  return returnString;
 }
 
 function boardFull(board) {
@@ -182,7 +185,7 @@ function checkIfComputerWins(board, sq1, sq2, sq3) {
 
 function ticTacToe() {
   let score = {
-    Player: 3,
+    Player: 0,
     Computer: 0,
     roundCount: 1,
   };
@@ -191,30 +194,33 @@ function ticTacToe() {
 }
 
 function askWhoStarts() {
+  console.clear();
   prompt(`Who starts, you or the computer? type 'player' or 'computer'`);
   let starter = readline.question().toLowerCase();
   while (!WHO_STARTS.includes(starter)) {
     starter = readline.question().toLowerCase();
   }
+  if (starter === 'p') {
+    starter = 'player';
+  } else if (starter === 'c') {
+    starter = 'computer';
+  }
   WHO_STARTS[4] = starter;
+  CURRENT_PLAYER[0] = starter;
 }
 
 function gameMechanics(score) {
   while (true) {
     let board = initializeBoard();
-    WHO_STARTS[4] === 'player' ? playerGoesFirst(board) :
-      computerGoesFirst(board);
-    // if (WHO_STARTS[4] === 'p' || WHO_STARTS[4] === 'player') {
-    //   playerGoesFirst(board);
-    // } else {
-    //   computerGoesFirst(board);
-    // }     
+
+    playerAndComputerMoves(board);
     displayBoard(board);
     updateScore(score, board);
     displayScore(score);
+
     let winner = checkIfGameIsOver(score);
     if (winner) {
-      declareWinner(winner);
+      declareOverallGameWinner(winner);
       return false;
     }
     let roundWinner = someoneWonRound(board);
@@ -223,6 +229,33 @@ function gameMechanics(score) {
     }
 
     if (!askForNextRound(score.roundCount)) return false;
+  }
+}
+
+function playerAndComputerMoves(board) {
+  while (true) {
+    displayBoard(board);
+
+    chooseSquare(board);
+    alternatePlayer();
+
+    if (someoneWonRound(board) || boardFull(board)) break;
+  }
+}
+
+function chooseSquare(board) {
+  if (CURRENT_PLAYER[0] === 'player') {
+    playerChoosesSquare(board);
+  } else {
+    computerChoosesSquare(board);
+  }
+}
+
+function alternatePlayer() {
+  if (CURRENT_PLAYER[0] === 'player') {
+    CURRENT_PLAYER[0] = 'computer';
+  } else if (CURRENT_PLAYER[0] === 'computer') {
+    CURRENT_PLAYER[0] = 'player';
   }
 }
 
@@ -257,7 +290,7 @@ function displayRoundWinner(roundWinner) {
     prompt(`${roundWinner} won that round!`);
 }
 
-function declareWinner(winner) {
+function declareOverallGameWinner(winner) {
   if (winner === 'Player') {
     prompt('Congrats, you have triumphed over the machine!');
   } else if (winner === 'Computer') {
@@ -266,13 +299,15 @@ function declareWinner(winner) {
 }
 
 function askForNextRound(round) {
-  prompt(`Are you ready for round ${round}?`);
-  let answer = readline.question().toLowerCase()[0];
+  prompt(`Are you ready for round ${round}? (y/n)`);
+  let answer = readline.question().toLowerCase();
   while (!YES_NO_ANSWERS.includes(answer.toLowerCase())) {
     prompt(`Please type either 'y' or 'n'...`);
-    answer = readline.question().toLowerCase()[0];
+    answer = readline.question().toLowerCase();
   }
   if (answer === 'y' || answer === 'yes') {
+    CURRENT_PLAYER[0] = WHO_STARTS[4];
+    debugger;
     return true;
   } else if (answer === 'n' || answer === 'no') {
     return false;
@@ -280,38 +315,13 @@ function askForNextRound(round) {
   return false;
 }
 
-function playerGoesFirst(board) {
-  while (true) {
-    displayBoard(board);
-
-    playerChoosesSquare(board);
-    if (someoneWonRound(board) || boardFull(board)) break;
-
-    computerChoosesSquare(board);
-    if (someoneWonRound(board) || boardFull(board)) break;
-  }
-}
-
-function computerGoesFirst(board) {
-  while (true) {
-    displayBoard(board);
-    computerChoosesSquare(board);
-    if (someoneWonRound(board) || boardFull(board)) break;
-    displayBoard(board);
-
-    playerChoosesSquare(board);
-    if (someoneWonRound(board) || boardFull(board)) break;
-  }
-}
-
-
 function askToPlayAgain() {
   while (true) {
-    prompt('Would you like to play again?');
-    let answer = readline.question().toLowerCase()[0];
+    prompt('Would you like to play again? (y/n)');
+    let answer = readline.question().toLowerCase();
     while (!YES_NO_ANSWERS.includes(answer.toLowerCase())) {
       prompt(`Please type either 'y' or 'n'...`);
-      answer = readline.question().toLowerCase()[0];
+      answer = readline.question().toLowerCase();
     }
     if (answer === 'y' || answer === 'yes') {
       ticTacToe();
