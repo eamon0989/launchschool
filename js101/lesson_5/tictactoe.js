@@ -23,8 +23,8 @@ function displayBoard(board) {
 
   console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}
   `);
-  // line 24, 26, 27 and 40 is the only way to get enough lines without
-  // an eslint error, I wanted the special grid layout
+  // breaking print statements over multiple lines is the only way to get
+  // enough lines without an eslint error, I wanted the special grid layout
   console.log(`  |  a  |  b  |  c  |
   |-----+-----+-----|`);
   console.log('  |     |     |     |');
