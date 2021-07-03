@@ -5,9 +5,9 @@ const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const WINNING_SCORE = 3;
 const YES_NO_ANSWERS = ['yes', 'y', 'no', 'n'];
-const WHO_STARTS = ['player', 'computer', 'p', 'c'];
-const CURRENT_PLAYER = [];
-const GAME_COUNT = [0];
+let whoStarts = ['player', 'computer', 'comp', 'p', 'c'];
+let currentPlayer = [];
+let gameCount = [0];
 const WINNING_LINES = [
   ['a1', 'b1', 'c1'], ['a2', 'b2', 'c2'], ['a3', 'b3', 'c3'], // rows
   ['a1', 'a2', 'a3'], ['b1', 'b2', 'b3'], ['c1', 'c2', 'c3'], // columns
@@ -79,18 +79,9 @@ function playerChoosesSquare(board) {
 function computerChoosesSquare(board) {
   let square;
 
-  for (let index = 0; index < WINNING_LINES.length; index++) {
-    let line = WINNING_LINES[index];
-    square = findAtRiskSquare(line, board, COMPUTER_MARKER);
-    if (square) break;
-  }
-
+  square = computerMove(board, COMPUTER_MARKER);
   if (!square) {
-    for (let index = 0; index < WINNING_LINES.length; index++) {
-      let line = WINNING_LINES[index];
-      square = findAtRiskSquare(line, board, HUMAN_MARKER);
-      if (square) break;
-    }
+    square = computerMove(board, HUMAN_MARKER);
   }
 
   if (!square) {
@@ -98,6 +89,18 @@ function computerChoosesSquare(board) {
     square = emptySquares(board)[randomIndex];
   }
   board[square] = COMPUTER_MARKER;
+}
+
+function computerMove(board, marker) {
+  let square;
+
+  for (let index = 0; index < WINNING_LINES.length; index++) {
+    let line = WINNING_LINES[index];
+    square = findAtRiskSquare(line, board, marker);
+    if (square) break;
+  }
+
+  return square;
 }
 
 function findAtRiskSquare(line, board, marker) {
@@ -134,10 +137,11 @@ function joinOr(array, char = ', ', string = 'or' ) {
       returnString += `${char}${String(array[index])}`;
     }
   }
+
   return returnString;
 }
 
-function boardFull(board) {
+function isBoardFull(board) {
   return emptySquares(board).length === 0;
 }
 
@@ -148,10 +152,16 @@ function someoneWonRound(board) {
 function detectWinner(board) {
   for (let line = 0; line < WINNING_LINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
-    if (checkIfPlayerWins(board, sq1, sq2, sq3)) {
-      return 'Player';
-    } else if (checkIfComputerWins(board, sq1, sq2, sq3)) {
-      return 'Computer';
+
+    let winner = checkWhoWins(board, sq1, sq2, sq3, HUMAN_MARKER);
+    if (winner) {
+      return winner;
+    }
+
+    winner = checkWhoWins(board, sq1, sq2, sq3, COMPUTER_MARKER);
+
+    if (winner) {
+      return winner;
     }
   }
 
@@ -162,26 +172,20 @@ function detectWinner(board) {
   return null;
 }
 
-function checkIfPlayerWins(board, sq1, sq2, sq3) {
+function checkWhoWins(board, sq1, sq2, sq3, marker) {
   if (
-    board[sq1] === HUMAN_MARKER &&
-    board[sq2] === HUMAN_MARKER &&
-    board[sq3] === HUMAN_MARKER
+    board[sq1] === marker &&
+    board[sq2] === marker &&
+    board[sq3] === marker
   ) {
-    return true;
+    if (marker === HUMAN_MARKER) {
+      return 'Player';
+    } else if (marker === COMPUTER_MARKER) {
+      return 'Computer';
+    }
   }
-  return false;
-}
 
-function checkIfComputerWins(board, sq1, sq2, sq3) {
-  if (
-    board[sq1] === COMPUTER_MARKER &&
-    board[sq2] === COMPUTER_MARKER &&
-    board[sq3] === COMPUTER_MARKER
-  ) {
-    return true;
-  }
-  return false;
+  return null;
 }
 
 function ticTacToe() {
@@ -197,28 +201,28 @@ function ticTacToe() {
 }
 
 function welcomeMessage() {
-  if (GAME_COUNT[0] === 0) {
+  if (gameCount[0] === 0) {
     console.clear();
     prompt(`Welcome to TicTacToe. First player to ${WINNING_SCORE} wins.`);
   }
 }
 
 function askWhoStarts() {
-  if (GAME_COUNT[0] !== 0) {
+  if (gameCount[0] !== 0) {
     console.clear();
   }
-  prompt(`Who starts, you or the computer? type 'player' or 'computer'`);
-  let starter = readline.question().toLowerCase();
-  while (!WHO_STARTS.includes(starter)) {
+  let starter = '';
+  while (!whoStarts.includes(starter)) {
+    prompt(`Who starts, you or the computer? type 'player' or 'computer'`);
     starter = readline.question().toLowerCase();
   }
   if (starter === 'p') {
     starter = 'player';
-  } else if (starter === 'c') {
+  } else if (['c', 'comp'].includes(starter)) {
     starter = 'computer';
   }
-  WHO_STARTS[4] = starter;
-  CURRENT_PLAYER[0] = starter;
+  whoStarts[5] = starter;
+  currentPlayer[0] = starter;
 }
 
 function gameMechanics(score) {
@@ -230,10 +234,10 @@ function gameMechanics(score) {
     updateScore(score, board);
     displayScore(score);
 
-    let winner = checkIfGameIsOver(score);
+    let winner = isGameOver(score);
     if (winner) {
-      declareOverallGameWinner(winner);
-      GAME_COUNT[0] += 1;
+      displayOverallGameWinner(winner);
+      gameCount[0] += 1;
       return false;
     }
     let roundWinner = someoneWonRound(board);
@@ -241,7 +245,7 @@ function gameMechanics(score) {
       displayRoundWinner(roundWinner);
     }
 
-    if (!askForNextRound(score.roundCount)) return false;
+    if (!askIsReadyForNextRound(score.roundCount)) return false;
   }
 }
 
@@ -252,12 +256,12 @@ function playerAndComputerMoves(board) {
     chooseSquare(board);
     alternatePlayer();
 
-    if (someoneWonRound(board) || boardFull(board)) break;
+    if (someoneWonRound(board) || isBoardFull(board)) break;
   }
 }
 
 function chooseSquare(board) {
-  if (CURRENT_PLAYER[0] === 'player') {
+  if (currentPlayer[0] === 'player') {
     playerChoosesSquare(board);
   } else {
     computerChoosesSquare(board);
@@ -265,14 +269,14 @@ function chooseSquare(board) {
 }
 
 function alternatePlayer() {
-  if (CURRENT_PLAYER[0] === 'player') {
-    CURRENT_PLAYER[0] = 'computer';
-  } else if (CURRENT_PLAYER[0] === 'computer') {
-    CURRENT_PLAYER[0] = 'player';
+  if (currentPlayer[0] === 'player') {
+    currentPlayer[0] = 'computer';
+  } else if (currentPlayer[0] === 'computer') {
+    currentPlayer[0] = 'player';
   }
 }
 
-function checkIfGameIsOver(score) {
+function isGameOver(score) {
   if (score.Player === WINNING_SCORE || score.Computer === WINNING_SCORE) {
     let winner = determineOverallWinner(score);
     return winner;
@@ -293,7 +297,7 @@ function updateScore(score, board) {
 }
 
 function displayScore(score) {
-  let currentOrFinal = (checkIfGameIsOver(score)) ? 'final' : 'current';
+  let currentOrFinal = (isGameOver(score)) ? 'final' : 'current';
   prompt(`The ${currentOrFinal} score is Player: ${score.
     Player}, Computer: ${score.Computer}`);
 }
@@ -303,7 +307,7 @@ function displayRoundWinner(roundWinner) {
     prompt(`${roundWinner} won that round!`);
 }
 
-function declareOverallGameWinner(winner) {
+function displayOverallGameWinner(winner) {
   if (winner === 'Player') {
     prompt('Congrats, you have triumphed over the machine!');
   } else if (winner === 'Computer') {
@@ -311,7 +315,7 @@ function declareOverallGameWinner(winner) {
   }
 }
 
-function askForNextRound(round) {
+function askIsReadyForNextRound(round) {
   prompt(`Are you ready for round ${round}? (y/n)`);
   let answer = readline.question().toLowerCase();
   while (!YES_NO_ANSWERS.includes(answer.toLowerCase())) {
@@ -319,8 +323,7 @@ function askForNextRound(round) {
     answer = readline.question().toLowerCase();
   }
   if (answer === 'y' || answer === 'yes') {
-    CURRENT_PLAYER[0] = WHO_STARTS[4];
-    debugger;
+    currentPlayer[0] = whoStarts[5];
     return true;
   } else if (answer === 'n' || answer === 'no') {
     return false;
@@ -336,9 +339,9 @@ function askToPlayAgain() {
       prompt(`Please type either 'y' or 'n'...`);
       answer = readline.question().toLowerCase();
     }
-    if (answer === 'y' || answer === 'yes') {
+    if (['y', 'yes'].includes(answer.toLowerCase())) {
       ticTacToe();
-    } else if (answer === 'n' || answer === 'no') {
+    } else if (['no', 'n'].includes(answer.toLowerCase())) {
       prompt('Thanks for playing Tic Tac Toe!');
       return false;
     }
