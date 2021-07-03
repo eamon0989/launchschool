@@ -10,6 +10,7 @@ const GAME_SCORE = {
   player: 0,
   dealer: 0,
 };
+let gameCount = 0;
 
 
 function prompt(message) {
@@ -54,11 +55,11 @@ function shuffle(array) {
 }
 
 function dealCards(deck, playerHand, dealerHand) {
-  playerHand.push(randomCard(deck), randomCard(deck));
-  dealerHand.push(randomCard(deck), randomCard(deck));
+  playerHand.push(drawRandomCard(deck), drawRandomCard(deck));
+  dealerHand.push(drawRandomCard(deck), drawRandomCard(deck));
 }
 
-function randomCard(deck) {
+function drawRandomCard(deck) {
   let cardIndex = Math.floor(Math.random() * deck.length);
   return deck.splice(cardIndex, 1)[0];
 }
@@ -120,16 +121,17 @@ function total(cards) {
 }
 
 function hitOrStay(playerHand, deck) {
-
   while (true) {
-
-    let answer = verifyUserHitOrStay();
+    let answer = verifyUserHitOrStayInput();
     if (answer === 'stay' || answer === 's' ||
       busted(playerHand)) break;
-    let drawnCard = randomCard(deck);
+
+    let drawnCard = drawRandomCard(deck);
     playerHand.push(drawnCard);
     let playerTotal = total(playerHand);
+
     displayPlayerCards(playerHand, playerTotal, drawnCard);
+
     if (busted(total(playerHand))) {
       return total(playerHand);
     }
@@ -138,7 +140,7 @@ function hitOrStay(playerHand, deck) {
   return total(playerHand);
 }
 
-function verifyUserHitOrStay() {
+function verifyUserHitOrStayInput() {
   let answer;
   let answers = ['hit', 'h', 'stay', 's'];
   while (!answers.includes(answer)) {
@@ -156,7 +158,7 @@ function dealerTurn(dealerHand, deck, playerHand, playerTotal) {
   prompt(`The dealers cards are the ${joinOr(dealerHand)}`);
 
   while (total(dealerHand) < DEALER_HITS_UNTIL) {
-    let card = randomCard(deck);
+    let card = drawRandomCard(deck);
     dealerHand.push(card);
     prompt(`The dealer drew the ${joinOr(card)}`);
   }
@@ -214,6 +216,7 @@ function displayRoundWinner(winner, playerTotal, dealerTotal) {
     prompt(`The dealer wins!`);
     prompt(`Score: Player: ${GAME_SCORE.player} Dealer: ${GAME_SCORE.dealer}`);
   }
+
 }
 
 function busted(total) {
@@ -238,7 +241,7 @@ function askToPlayAgain() {
   }
 }
 
-function askIfReadyForNextRound() {
+function isReadyForNextRound() {
   while (true) {
     prompt('Are you ready for the next round? (y/n)');
     let answer = readline.question().toLowerCase();
@@ -247,7 +250,6 @@ function askIfReadyForNextRound() {
       answer = readline.question().toLowerCase();
     }
     if (answer === 'y' || answer === 'yes') {
-      // resetScores();
       return true;
     } else if (answer === 'n' || answer === 'no') {
       prompt('Thanks for playing 21!');
@@ -266,7 +268,7 @@ function checkIfGameHasBeenWon() {
   return false;
 }
 
-function gameOver(gameWinner) {
+function displayGameWinner(gameWinner) {
   if (gameWinner === 'player') {
     prompt(`You won the game, congratulations!!!`);
   } else if (gameWinner === 'dealer') {
@@ -277,29 +279,39 @@ function gameOver(gameWinner) {
 function resetScores() {
   GAME_SCORE.player = 0;
   GAME_SCORE.dealer = 0;
+  gameCount += 1;
 }
 
 
 function callGame() {
+  if (gameCount === 0) {
+    isReadyToStart();
+  }
+
+  while (true) {
+    start21();
+    let gameWinner = checkIfGameHasBeenWon();
+    if (gameWinner) {
+      displayGameWinner(gameWinner);
+      break;
+    } else {
+      let nextRound = isReadyForNextRound();
+      if (nextRound === false) {
+        break;
+      }
+    }
+  }
+}
+
+function isReadyToStart() {
   console.clear();
   let answer;
-  while (answer !== 'y') {
+  while (!['y', 'yes'].includes(answer)) {
     prompt("First to win 5 games wins. Don't go over 21! Ready? Press 'y' to start");
     answer = readline.question().toLowerCase();
   }
 
-  if (answer === 'y') {
-    while (true) {
-      start21();
-      let gameWinner = checkIfGameHasBeenWon();
-      if (gameWinner) {
-        gameOver(gameWinner);
-        break;
-      } else {
-        askIfReadyForNextRound();
-      }
-    }
-  }
+  return answer;
 }
 
 callGame();
