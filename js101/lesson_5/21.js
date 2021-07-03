@@ -6,7 +6,7 @@ const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack',
 const YES_NO_ANSWERS = ['yes', 'y', 'no', 'n'];
 const MAX_VALUE = 21;
 const DEALER_HITS_UNTIL = MAX_VALUE - 4;
-const GAME_SCORE = {
+let gameScore = {
   player: 0,
   dealer: 0,
 };
@@ -188,9 +188,9 @@ function checkRoundWinner(playerTotal, dealerTotal) {
 
 function updateScore(winner) {
   if (winner === 'player') {
-    GAME_SCORE.player += 1;
+    gameScore.player += 1;
   } else {
-    GAME_SCORE.dealer += 1;
+    gameScore.dealer += 1;
   }
 }
 
@@ -198,11 +198,11 @@ function displayRoundWinner(winner, playerTotal, dealerTotal) {
 
   if (busted(dealerTotal)) {
     prompt(`The dealer has gone bust!`);
-    prompt(`Score: Player: ${GAME_SCORE.player} Dealer: ${GAME_SCORE.dealer}`);
+    prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
     return false;
   } else if (busted(playerTotal)) {
     prompt(`Your cards are worth ${playerTotal}, you have gone bust!`);
-    prompt(`Score: Player: ${GAME_SCORE.player} Dealer: ${GAME_SCORE.dealer}`);
+    prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
     return false;
   }
 
@@ -211,10 +211,10 @@ function displayRoundWinner(winner, playerTotal, dealerTotal) {
 
   if (winner === 'player') {
     prompt(`You win!`);
-    prompt(`Score: Player: ${GAME_SCORE.player} Dealer: ${GAME_SCORE.dealer}`);
+    prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
   } else if (winner === 'dealer') {
     prompt(`The dealer wins!`);
-    prompt(`Score: Player: ${GAME_SCORE.player} Dealer: ${GAME_SCORE.dealer}`);
+    prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
   }
 
 }
@@ -252,16 +252,15 @@ function isReadyForNextRound() {
     if (answer === 'y' || answer === 'yes') {
       return true;
     } else if (answer === 'n' || answer === 'no') {
-      prompt('Thanks for playing 21!');
       return false;
     }
   }
 }
 
 function checkIfGameHasBeenWon() {
-  if (GAME_SCORE.player === 5) {
+  if (gameScore.player === 5) {
     return 'player';
-  } else if (GAME_SCORE.dealer === 5) {
+  } else if (gameScore.dealer === 5) {
     return 'dealer';
   }
 
@@ -277,8 +276,8 @@ function displayGameWinner(gameWinner) {
 }
 
 function resetScores() {
-  GAME_SCORE.player = 0;
-  GAME_SCORE.dealer = 0;
+  gameScore.player = 0;
+  gameScore.dealer = 0;
   gameCount += 1;
 }
 
