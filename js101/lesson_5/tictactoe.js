@@ -21,25 +21,22 @@ function prompt(msg) {
 function displayBoard(board) {
   console.clear();
 
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}
-  `);
-  // breaking print statements over multiple lines is the only way to get
-  // enough lines without an eslint error, I wanted the special grid layout
-  console.log(`  |  a  |  b  |  c  |
-  |-----+-----+-----|`);
-  console.log('  |     |     |     |');
-  console.log(`1 |  ${board['a1']}  |  ${board['b1']}  |  ${board['c1']}  |`);
-  console.log('  |     |     |     |');
-  console.log('--+-----+-----+-----|');
-  console.log('  |     |     |     |');
-  console.log(`2 |  ${board['a2']}  |  ${board['b2']}  |  ${board['c2']}  |`);
-  console.log('  |     |     |     |');
-  console.log('--+-----+-----+-----|');
-  console.log('  |     |     |     |');
-  console.log(`3 |  ${board['a3']}  |  ${board['b3']}  |  ${board['c3']}  |`);
-  console.log('  |     |     |     |');
-  console.log(`__|_____|_____|_____|
-  `);
+  let boardLayout = `You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}
+    |  a  |  b  |  c  |
+    |-----+-----+-----|
+    |     |     |     |
+  1 |  ${board['a1']}  |  ${board['b1']}  |  ${board['c1']}  |
+    |     |     |     |
+  --+-----+-----+-----|
+    |     |     |     |
+  2 |  ${board['a2']}  |  ${board['b2']}  |  ${board['c2']}  |
+    |     |     |     |
+  --+-----+-----+-----|
+    |     |     |     |
+  3 |  ${board['a3']}  |  ${board['b3']}  |  ${board['c3']}  |
+    |     |     |     |
+  __|_____|_____|_____|`;
+  console.log(boardLayout);
 }
 
 function initializeBoard() {
