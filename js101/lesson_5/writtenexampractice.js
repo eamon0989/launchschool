@@ -35,16 +35,16 @@ const test = arr => {
 test(greeting);
 console.log(greeting);
 
- */
-let greeting = ["Hello"];
+//  */
+// let greeting = ["Hello"];
 
-const test = arr => {
-  arr = arr.push("World!");
-  console.log(typeof arr);
-  return arr;
-}
+// const test = arr => {
+//   arr = arr.push("World!");
+//   console.log(typeof arr);
+//   return arr;
+// }
 
-test(greeting); // ['Hello', 'World']
-console.log(greeting);
+// test(greeting); // ['Hello', 'World']
+// console.log(greeting);
 
 

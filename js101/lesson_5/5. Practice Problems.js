@@ -127,3 +127,130 @@
 //   });
 // });
 
+// function changeName(jim) { // has access to the variables passed into it
+//   // console.log(name);
+
+//   name += 1; // does this reassignment change the variable outside the function?
+//   console.log(name);
+// }
+
+// function anotherFunction() {
+//   let name = 1;
+//   changeName(name);
+//   console.log(name); // => logs 'jim'
+// }
+
+// anotherFunction();
+
+// function multiply(a) {
+//   return a * 10;
+// }
+
+// function add(a, b) {
+//   a = multiply(a);
+//   b = multiply(b);
+//   return a + b;
+// }
+
+// console.log(add(1, 2));
+
+
+// if (true) {
+//   let a = 'foo';
+// }
+
+// console.log(a); // ReferenceError
+
+// function addName(arr, name) {
+//   arr = arr.concat([name]);
+//   console.log(arr);
+// }
+
+// let names = ["bob", "kim"];
+// addName(names, "jim");
+// console.log(names); // => [ 'bob', 'kim', ]
+
+// let numArray = [1, [2], 3];
+
+// function test (arr) {
+//   arr.map(num => {
+//     arr[0] = 'test';
+//   });
+// }
+
+// test(numArray); // => logs 2, [3], 4 respectively
+
+// console.log(numArray); // => [1, [3], 3]
+
+// let numArray = [1, [2], 3];
+
+// function test (arr) {
+//   arr.map(num => {
+//     num[0] += 1;
+//   });
+// }
+
+// test(numArray);
+
+// console.log(numArray);
+
+// function changeName(a) {
+//   name1 = "bob"; // does this reassignment change the variable outside the function?
+// }
+
+// function anotherFunction() {
+//   let name1 = "jim";
+//   changeName(name1);
+//   console.log(name1); // => logs 'jim'
+// }
+
+// anotherFunction();
+
+// let foo = {
+//   a: 'hello',
+//   b: 'world',
+// };
+
+// let qux = 'hello';
+
+// function bar(argument1, argument2) {
+//   argument1.a = 'hi';
+//   argument2 = 'hi';
+// }
+
+// bar(foo, qux);
+
+// console.log(foo.a);
+// console.log(qux);
+
+// let array = [1, 2, 3]
+
+// function append(targetArr, valueToAppend) {
+//   targetArr.push(valueToAppend);
+//   return targetArr;
+// }
+
+// append(array, 4)
+// console.log(array);
+
+// Question example: What will line 9 log to the console and why?
+
+// /*0*/ let greeting = ["Hello"];
+// /*1*/
+// /*2*/ const test = arr => {
+// /*3*/ arr = ["ByeBye"];
+// /*4*/ arr.push("World!");
+// /*5*/ return arr;
+// /*6*/ }
+// /*7*/
+// /*8*/ test(greeting);
+// /*9*/ console.log(greeting);
+
+// let arr = ['a', 'b', 'c', [1]];
+// let copyOfArr = [...arr];
+
+// copyOfArr.push('d');
+// copyOfArr[3].push(2);
+
+// console.log(arr);       // => [ 'a', 'b', 'c' ]
+// console.log(copyOfArr); // => [ 'a', 'b', 'c', 'd' ]
