@@ -6,6 +6,9 @@ const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack',
 const YES_NO_ANSWERS = ['yes', 'y', 'no', 'n'];
 const MAX_VALUE = 21;
 const DEALER_HITS_UNTIL = MAX_VALUE - 4;
+const PROMPT_STR_LENGTH = 3;
+const ROUNDS_NEEDED_TO_WIN = 5;
+const HIT_STAY_ANSWERS = ['hit', 'h', 'stay', 's'];
 let gameScore = {
   player: 0,
   dealer: 0,
@@ -17,10 +20,11 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function start21() {
+function playRoundOne() {
   let playerHand = [];
   let dealerHand = [];
   let deck = initializeDeck();
+
   dealCards(deck, playerHand, dealerHand);
   let playerTotal = total(playerHand);
   let dealerTotal = total(dealerHand);
@@ -123,7 +127,7 @@ function total(cards) {
 function hitOrStay(playerHand, deck) {
   while (true) {
     let answer = verifyUserHitOrStayInput();
-    if (answer === 'stay' || answer === 's' ||
+    if (answer.startsWith('s') ||
       busted(playerHand)) break;
 
     let drawnCard = drawRandomCard(deck);
@@ -142,8 +146,7 @@ function hitOrStay(playerHand, deck) {
 
 function verifyUserHitOrStayInput() {
   let answer;
-  let answers = ['hit', 'h', 'stay', 's'];
-  while (!answers.includes(answer)) {
+  while (!HIT_STAY_ANSWERS.includes(answer)) {
     prompt("Type (h)it or (s)tay?");
     answer = readline.question().toLowerCase();
   }
@@ -151,11 +154,12 @@ function verifyUserHitOrStayInput() {
   return answer;
 }
 
-function dealerTurn(dealerHand, deck, playerHand, playerTotal) {
-  displayPlayerCards(playerHand, playerTotal);
-  prompt("You chose to stay!");
+function dealerTurn(dealerHand, deck) {
+  console.clear();
   prompt(`Dealers turn`);
   prompt(`The dealers cards are the ${joinOr(dealerHand)}`);
+  let stringLen = `The dealers cards are the ${joinOr(dealerHand)}`.length +
+    PROMPT_STR_LENGTH;
 
   while (total(dealerHand) < DEALER_HITS_UNTIL) {
     let card = drawRandomCard(deck);
@@ -164,8 +168,10 @@ function dealerTurn(dealerHand, deck, playerHand, playerTotal) {
   }
 
   if (busted(total(dealerHand))) {
+    console.log(`-`.repeat(stringLen));
     prompt(`The dealers cards are worth ${total(dealerHand)}.`);
   } else {
+    console.log(`-`.repeat(stringLen));
     prompt(`The dealer chose to stay!`);
   }
   return total(dealerHand);
@@ -181,6 +187,8 @@ function checkRoundWinner(playerTotal, dealerTotal) {
   }
   if (playerTotal > dealerTotal) {
     return 'player';
+  } else if (playerTotal === dealerTotal) {
+    return 'tie';
   }
 
   return 'dealer';
@@ -189,21 +197,28 @@ function checkRoundWinner(playerTotal, dealerTotal) {
 function updateScore(winner) {
   if (winner === 'player') {
     gameScore.player += 1;
-  } else {
+  } else if (winner === 'dealer') {
     gameScore.dealer += 1;
   }
 }
 
-function displayRoundWinner(winner, playerTotal, dealerTotal) {
-
+function displayBusted(dealerTotal, playerTotal) {
   if (busted(dealerTotal)) {
     prompt(`The dealer has gone bust!`);
     prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
-    return false;
+    return true;
   } else if (busted(playerTotal)) {
     prompt(`Your cards are worth ${playerTotal}, you have gone bust!`);
     prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
-    return false;
+    return true;
+  }
+
+  return false;
+}
+
+function displayRoundWinner(winner, playerTotal, dealerTotal) {
+  if (displayBusted(dealerTotal, playerTotal)) {
+    return undefined;
   }
 
   prompt(`Your cards are worth ${playerTotal
@@ -215,8 +230,11 @@ function displayRoundWinner(winner, playerTotal, dealerTotal) {
   } else if (winner === 'dealer') {
     prompt(`The dealer wins!`);
     prompt(`Score: Player: ${gameScore.player} Dealer: ${gameScore.dealer}`);
+  } else if (winner === 'tie') {
+    prompt(`It's a tie!`);
   }
 
+  return undefined;
 }
 
 function busted(total) {
@@ -231,10 +249,10 @@ function askToPlayAgain() {
       prompt(`Please type either 'y' or 'n'...`);
       answer = readline.question().toLowerCase();
     }
-    if (answer === 'y' || answer === 'yes') {
+    if (answer.startsWith('y')) {
       resetScores();
       callGame();
-    } else if (answer === 'n' || answer === 'no') {
+    } else if (answer.startsWith('n')) {
       prompt('Thanks for playing 21!');
       return false;
     }
@@ -249,18 +267,15 @@ function isReadyForNextRound() {
       prompt(`Please type either 'y' or 'n'...`);
       answer = readline.question().toLowerCase();
     }
-    if (answer === 'y' || answer === 'yes') {
-      return true;
-    } else if (answer === 'n' || answer === 'no') {
-      return false;
-    }
+
+    return answer.startsWith('y');
   }
 }
 
 function checkIfGameHasBeenWon() {
-  if (gameScore.player === 5) {
+  if (gameScore.player === ROUNDS_NEEDED_TO_WIN) {
     return 'player';
-  } else if (gameScore.dealer === 5) {
+  } else if (gameScore.dealer === ROUNDS_NEEDED_TO_WIN) {
     return 'dealer';
   }
 
@@ -269,9 +284,17 @@ function checkIfGameHasBeenWon() {
 
 function displayGameWinner(gameWinner) {
   if (gameWinner === 'player') {
-    prompt(`You won the game, congratulations!!!`);
+    console.log(`
++------------------------------------------+
+|    You won the game, congratulations!!!  |
++------------------------------------------+
+    `);
   } else if (gameWinner === 'dealer') {
-    prompt(`Sorry, the dealer wins. Maybe next time...`);
+    console.log(`
++------------------------------------------------+
+|    Sorry, the dealer wins. Maybe next time...  |
++------------------------------------------------+
+    `);
   }
 }
 
@@ -288,7 +311,7 @@ function callGame() {
   }
 
   while (true) {
-    start21();
+    playRoundOne();
     let gameWinner = checkIfGameHasBeenWon();
     if (gameWinner) {
       displayGameWinner(gameWinner);
@@ -306,7 +329,9 @@ function isReadyToStart() {
   console.clear();
   let answer;
   while (!['y', 'yes'].includes(answer)) {
-    prompt("First to win 5 games wins. Don't go over 21! Ready? Press 'y' to start");
+    prompt("Welcome to 21!");
+    prompt(`First to win ${ROUNDS_NEEDED_TO_WIN} games wins.`);
+    prompt(`Don't go over 21! Ready? Press 'y' to start`);
     answer = readline.question().toLowerCase();
   }
 
