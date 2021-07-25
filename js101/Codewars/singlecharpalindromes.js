@@ -64,3 +64,16 @@ console.log(solve("abbaab"));//,"not possible");
 console.log(solve("madmam"));//,"remove one");
 console.log(solve("raydarm"));//,"not possible");
 console.log(solve("hannah"));//,"OK");
+
+/* 
+Walk through the test cases, ask assumptions to examiner
+write out a high level algo first
+
+e.g. iterate through string, remove one char at a time
+check if string is a palindrome
+repeat until done
+
+every time you write something,
+run console.log to make sure it works as intented
+
+*/
