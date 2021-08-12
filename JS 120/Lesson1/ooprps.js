@@ -182,6 +182,7 @@ function shortAnswers(choice) {
 
   return choice;
 }
+
 function createPlayer() {
   return {
     move: null,
