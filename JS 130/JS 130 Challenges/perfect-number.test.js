@@ -5,15 +5,15 @@ describe("PerfectNumber", () => {
     expect(() => { PerfectNumber.classify(-1) }).toThrow();
   });
 
-  xtest("classify deficient", () => {
+  test("classify deficient", () => {
     expect(PerfectNumber.classify(13)).toEqual('deficient');
   });
 
-  xtest("classify perfect", () => {
+  test("classify perfect", () => {
     expect(PerfectNumber.classify(28)).toEqual('perfect');
   });
 
-  xtest("classify abundant", () => {
+  test("classify abundant", () => {
     expect(PerfectNumber.classify(12)).toEqual('abundant');
   });
 });
