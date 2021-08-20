@@ -1,4 +1,7 @@
 {
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
     "test": "jest --verbose"
    },

@@ -43,32 +43,31 @@ For each letter, add another space outside, 2 spaces inside, another outside
 */
 
 class Diamond {
-  static letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-  static arrayOfStrings = [];
+  static letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   static makeDiamond(letter) {
+    let array = [];
     if (letter === 'A') return 'A\n';
 
     let spaces = (this.letters.indexOf(letter) * 2) - 1;
     let middleRow = Diamond.createMiddleRow(letter, spaces);
     let firstRow = Diamond.createFirstRow(spaces);
 
-    Diamond.arrayOfStrings.push(firstRow);
-    Diamond.createInnerRows(spaces, letter);
-    Diamond.arrayOfStrings.push(middleRow);
-    Diamond.arrayOfStrings.push(...Diamond.arrayOfStrings
-      .slice(0, Diamond.arrayOfStrings.length - 1).reverse());
+    array.push(firstRow);
+    Diamond.addInnerRows(spaces, letter, array);
+    array.push(middleRow);
+    array.push(...array.slice(0, array.length - 1)
+      .reverse());
 
-    return Diamond.arrayOfStrings.join('\n') + '\n';
+    return array.join('\n') + '\n';
   }
 
-  static createInnerRows(spaces, letter) {
+  static addInnerRows(spaces, letter, array) {
     let innerSpaces = 1;
     let outerSpaces = (spaces - innerSpaces) / 2;
 
     for (let index = 1; index < Diamond.letters.indexOf(letter); index += 1) {
-      Diamond.arrayOfStrings.push(`${' '.repeat(outerSpaces)}${
+      array.push(`${' '.repeat(outerSpaces)}${
         Diamond.letters[index]}${' '.repeat(innerSpaces)}${
         Diamond.letters[index]}${' '.repeat(outerSpaces)}`);
 
@@ -85,7 +84,5 @@ class Diamond {
     return `${' '.repeat(Math.ceil(spaces / 2))}A${' '.repeat(Math.ceil(spaces / 2))}`;
   }
 }
-
-// console.log(Diamond.makeDiamond('C'));
 
 module.exports = Diamond;
