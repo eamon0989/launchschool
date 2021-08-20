@@ -59,7 +59,7 @@ class Diamond {
     Diamond.arrayOfStrings.push(middleRow);
     Diamond.arrayOfStrings.push(...Diamond.arrayOfStrings
       .slice(0, Diamond.arrayOfStrings.length - 1).reverse());
-    // console.log(Diamond.arrayOfStrings);
+
     return Diamond.arrayOfStrings.join('\n') + '\n';
   }
 
