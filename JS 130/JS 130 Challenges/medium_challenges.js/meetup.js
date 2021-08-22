@@ -35,88 +35,46 @@ if second, the second etc
 
 "use strict";
 
-function dateAsString(year, month, day) {
-  let date = new Date(year, month - 1, day);
-  return date.toString();
-}
-
-
 class Meetup {
   constructor(year, month) {
     this.month = month;
     this.year = year;
     this.lastDayOfMonth = new Date(this.year, this.month, 0).getDate();
+    this.setLastWeek();
   }
 
-  static days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+  static FIRST_POSSIBLE_DAY = {
+    first: 1,
+    second: 8,
+    third: 15,
+    fourth: 22,
+    fifth: 29,
+    last: undefined,
+    teenth: 13,
+  };
 
-  static teens = {
-    13: true,
-    14: true,
-    15: true,
-    16: true,
-    17: true,
-    18: true,
-    19: true,
-  }
+  static DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-  day(day, descriptor) {
-    if (descriptor.toLowerCase() === 'last') return this.lastDay(day);
 
-    let descriptors = ['empty', 'first', 'second', 'third', 'fourth', 'fifth', 'last', 'teenth'];
-    let count = 0;
-    let dayOfMonth = 1;
-    let date = new Date(this.year, this.month - 1, dayOfMonth);
+  day(weekday, descriptor) {
+    let dayOfMonth = Meetup.FIRST_POSSIBLE_DAY[descriptor.toLowerCase()];
 
-    while (dayOfMonth <= this.lastDayOfMonth) {
-      date = new Date(this.year, this.month - 1, dayOfMonth);
+    while (dayOfMonth <= (this.lastDayOfMonth || dayOfMonth + 6)) {
+      let date = new Date(this.year, this.month - 1, dayOfMonth);
 
-      if (Meetup.days[date.getDay()] === day.toLowerCase()) {
-        count += 1;
-      }
-
-      if (descriptor.toLowerCase() === 'teenth') {
-        if (Meetup.days[date.getDay()] === day.toLowerCase() &&
-          Meetup.teens[dayOfMonth]) {
-          return date;
-        }
-      }
-
-      if (Meetup.days[date.getDay()] === day.toLowerCase() &&
-      count === descriptors.indexOf(descriptor.toLowerCase())) {
+      if (Meetup.DAYS[date.getDay()] === weekday.toLowerCase()) {
         return date;
       }
-      if (dayOfMonth === this.lastDayOfMonth) return null;
 
       dayOfMonth += 1;
     }
 
-
-    return date;
+    return null;
   }
 
-  lastDay(day) {
-    let dayOfMonth = this.lastDayOfMonth;
-    let date = new Date(this.year, this.month - 1, dayOfMonth);
-
-    while (dayOfMonth > 0) {
-      date = new Date(this.year, this.month - 1, dayOfMonth);
-
-      if (Meetup.days[date.getDay()] === day.toLowerCase()) {
-        return date;
-      }
-      dayOfMonth -= 1;
-    }
-  }
-
-  teenth() {
-
+  setLastWeek() {
+    Meetup.FIRST_POSSIBLE_DAY.last = this.lastDayOfMonth - 6;
   }
 }
-
-let meetup = new Meetup(2015, 2);
-let expected = dateAsString(2015, 2, 22);
-console.log(meetup.day('Sunday', 'last').toString());
-console.log(expected);
 
 module.exports = Meetup;
