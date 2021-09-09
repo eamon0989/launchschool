@@ -9,7 +9,7 @@ CREATE TABLE todos (
   id serial PRIMARY KEY,
   title text NOT NULL,
   done boolean NOT NULL DEFAULT false,
-  todo_list integer NOT NULL 
+  todolist_id integer NOT NULL 
     REFERENCES todo_lists (id)
     ON DELETE CASCADE
 );
