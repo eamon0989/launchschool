@@ -13,3 +13,4 @@ CREATE TABLE todos (
     REFERENCES todo_lists (id)
     ON DELETE CASCADE
 );
+
