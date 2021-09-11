@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Document</title>
+      <script src="//dbdwvr6p7sskw.cloudfront.net/210/files/email_data_v2.js"></script>
+      <script>
+          let months = {
+
+          }
+
+          function mailCount(emailData) {
+            let emails = emailData.split('##||##');
+            let date = emailData.match(/(?!Date: )[\d-]+/g).sort(); // /[\d-]+(?=#|#)/
+            let count = `Count of Email: ${emails.length}`;
+            let first = new Date(date[0]);
+            let last = new Date(date[date.length - 1]);
+            let dateString = `Date Range: ${first.toDateString()} - ${last.toDateString()}`;
+            console.log(count);
+            console.log(dateString);
+          }
+
+          mailCount(emailData);
+
+          // console output
+
+          // Count of Email: 5
+          // Date Range: Sat Jun 25 2016 - Thu Aug 11 2016
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
+
