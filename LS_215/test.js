@@ -46,12 +46,19 @@
 // console.log(studentGrades.sort(compareGrades));
 
 
-function foo(list) {
-  return list.map(function (word) {
-      return word.match(/[aeiou]/gi) || [];
-    }).reduce(function (acc, letterList) {
-      return acc + letterList.length;
-    }, 0);
+// function foo(list) {
+//   return list.map(function (word) {
+//       return word.match(/[aeiou]/gi) || [];
+//     }).reduce(function (acc, letterList) {
+//       return acc + letterList.length;
+//     }, 0);
+// }
+
+// console.log(foo(['apple', 'banana', 'orange']));
+
+function doubler(array) {
+  return Object.values(array);
 }
 
-console.log(foo(['apple', 'banana', 'orange']));
+console.log(doubler([1, , 2, , , 3, undefined])); 
+// [ 1, 2, 3, undefined ]

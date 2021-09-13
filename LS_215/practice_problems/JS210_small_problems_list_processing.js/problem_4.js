@@ -52,22 +52,26 @@ Algorithm:
 */
 
 function numbers(stringOfNums) {
-  let nums = stringOfNums.match(/\d+/g);
-  let fullNums = getFullNums(nums);
-  let separators = stringOfNums.match(/\D+/g);
+  let nums = stringOfNums.match(/[\d+]|[\D]+/g);
+  let result = getFullNums(nums);
+  // console.log(result);
+  // let separators = stringOfNums.match(/\D+/g);
 
-  let result = [];
-  for (let i = 0; i < fullNums.length; i += 1) {
-    result.push(fullNums[i], separators?.[i] || '');
-  }
+  // let result = [];
+  // for (let i = 0; i < fullNums.length; i += 1) {
+  //   result.push(fullNums[i], separators?.[i] || '');
+  // }
 
   return replaceWithRanges(result);
 }
 
 function getFullNums(array) {
   let resultArray = [];
+  // console.log(array);
   array.forEach((num, index) => {
-    if (Number(num) < resultArray[index - 1]) {
+    if (Number.isNaN(Number(num))) {
+      resultArray.push(num);
+    } else if (Number(num) < resultArray[index - 1]) {
       let endNum = String(num);
       let currentNum = resultArray[index - 1];
       while (!String(currentNum).endsWith(endNum)) {
@@ -76,10 +80,10 @@ function getFullNums(array) {
 
       resultArray.push(currentNum);
     } else {
-      resultArray.push(Number(num));
+      resultArray.push(num);
     }
   })
-
+  console.log(resultArray);
   return resultArray.map(String);
 }
 
@@ -105,7 +109,7 @@ function rangeReplace(start, end) {
 
 console.log(numbers("1, 3, 7, 2, 4, 1")); // --> 1, 3, 7, 12, 14, 21
 console.log(numbers("1-3, 1-2")); // --> 1, 2, 3, 11, 12
-console.log(numbers("1:5:2")); // --> 1, 2, 3, 4, 5, 6, ... 12
-console.log(numbers("104-2")); // --> 104, 105, ... 112
-console.log(numbers("104-02")); // --> 104, 105, ... 202
-console.log(numbers("545, 64:11")); // --> 545, 564, 565, .. 611
+// console.log(numbers("1:5:2")); // --> 1, 2, 3, 4, 5, 6, ... 12
+// console.log(numbers("104-2")); // --> 104, 105, ... 112
+// console.log(numbers("104-02")); // --> 104, 105, ... 202
+// console.log(numbers("545, 64:11")); // --> 545, 564, 565, .. 611
