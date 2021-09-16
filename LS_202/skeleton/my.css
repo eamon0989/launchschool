@@ -1,0 +1,30 @@
+strong {
+  color: blue;
+  text-decoration: underline;
+}
+
+body {
+  background-color: #ffffe0;
+}
+
+h1 {
+  color: orange;
+  text-align: center;
+}
+
+.more-text {
+  color: gray;
+}
+
+em {
+  color: red;
+}
+
+p {
+  font-size: 24px; /* the font is 24 pixels high */
+}
+
+#final-paragraph {
+  text-decoration: underline;
+}
+

@@ -1,0 +1,30 @@
+code {
+  text-decoration: underline;
+  font-style: italic;
+  font-family: monospace;
+  color: green;
+}
+
+h1 {
+  font: Georgia;
+  color: blue;
+}
+
+body {
+  font: normal 18px Helvetica, Arial;
+}
+
+mark {
+  background-color: yellow;
+  font-family: Courier, monospace;
+  font-size: 12px;
+}
+
+strong {
+  font-size: 15px;
+}
+
+em {
+  font-size: 20px;
+  text-transform: uppercase;
+}

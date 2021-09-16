@@ -1,0 +1,10 @@
+body {
+  /* font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+  line-height: 2.5;
+  font-family: Tahoma, "Trebuchet MS", Verdana, sans-serif; */
+  font: italic bold 20px/2.5 Verdana, "Trebuchet MS", Tahoma, sans-serif;
+  text-align: justify;
+  text-indent: 4em;
+}
