@@ -12,6 +12,8 @@ router.get('/areas_of_continents', (req, res, next) => {
     australia: 9008500
   };
 
+  res.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+
   res.json(continents);
 });
 
