@@ -12,6 +12,13 @@ a {
   color: #3e59b2;
 }
 
+#modal {
+  position: absolute;
+  left: 50%;
+  width: 400px;
+  margin-left: -200px;
+}
+
 .column {
   max-width: 1000px;
   margin: 0 auto;
