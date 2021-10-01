@@ -1,0 +1,16 @@
+.partial {
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+.one_half {
+  width: 50%;
+}
+
+.left {
+  padding-right: 5px;
+}
+
+.right {
+  padding-left: 5px;
+}

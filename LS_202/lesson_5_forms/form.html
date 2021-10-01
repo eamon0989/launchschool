@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="#" method="post">
+    <fieldset>
+      <dl>
+        <dt><label for="first_name">First Name</label></dt>
+        <dd><input type="text" name="first_name" id="first_name" required /></dd>
+        <dt><label for="last_name">Last Name</label></dt>
+        <dd><input type="text" name="last_name" id="last_name" required /></dd>
+        <dt><label for="email">Email Address</label></dt>
+        <dd><input type="email" name="email" id="email"
+          autocomplete="off" autocorrect="off"
+          autocapitalize="none" required /></dd>
+        <dt><label for="phone">Phone Number</label></dt>
+        <dd><input type="tel" name="phone" id="phone" required placeholder="###-###-####"/></dd>
+        <dt><label for="phone_type">Phone Type</label></dt>
+        <dd>
+          <select name="phone_type" id="phone_type">
+            <option value="home" selected>Home</option>
+            <option value="business">Business</option>
+            <option value="mobile">Mobile</option>
+          </select>
+          <dt><label for="message">Message</label></dt>
+          <dd><textarea id="message" name="message" rows="6" cols="80" placeholder="Type your message here."></textarea></dd>
+      <input type="submit" value="Send" />
+
+    </fieldset>
+  </form>
+
+  <form action="#" method="get">
+    <fieldset>
+      <label>
+        Search for
+        <input type="search" name="query" id="query" />
+      </label>
+  
+      <label>
+        <input type="radio" name="filter" value="tv" required />
+        TV
+      </label>
+  
+      <label>
+        <input type="radio" name="filter" value="movies" required />
+        Movies
+      </label>
+  
+      <label>
+        <input type="radio" name="filter" value="music" required />
+        Music
+      </label>
+  
+      <button name="search">Search</button>
+    </fieldset>
+  </form>
+</body>
+</html>
+
+Create a contact form that collects the user's first name, last name, email address, and phone number.
+Be sure to require all inputs and to use appropriate input types and labels. Prevent Chrome and iOS
+Safari from doing any auto-actions (e.g., autocomplete and autocorrect) on the email input.
+
+For this problem, don't use a definition list to organize your form. We'll do that in the next question.
