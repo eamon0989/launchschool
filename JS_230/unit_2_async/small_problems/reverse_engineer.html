@@ -1,0 +1,33 @@
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Reverse Engineer</title>
+    <style>
+      #container {
+        width: 500px;
+        height: 500px;
+        background-color: red;
+      }
+      #inner {
+        width: 250px;
+        height: 250px;
+        background-color: purple;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id='inner'></div>
+    </div>
+    <script>
+
+    let container = document.querySelector('#container');
+
+    document.querySelector('html').addEventListener('click', (e) => {
+      if (!container.contains(e.target)) {
+        container.style.display = 'none';
+      }
+    })
+  </script>
+  </body>
+</html>
