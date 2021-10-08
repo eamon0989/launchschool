@@ -164,6 +164,9 @@ router.get('/schedules/:staff_id', function(req, res, next) {
  *     'Staff can not be created. Check your inputs.'
  */
 router.post('/staff_members', function(req, res, next) {
+
+  // res.set('Access-Control-Allow-Origin', 'http://localhost:5500');
+
   const email = req.body['email'];
   const name = req.body['name'];
 

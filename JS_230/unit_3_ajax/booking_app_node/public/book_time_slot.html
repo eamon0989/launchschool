@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="/javascripts/book_time_slots.js"></script>
+  <style>
+    #new_student_form {
+      display: none;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <form id="schedule_form" method="POST" action="/api/bookings">
+    <dl>
+      <dt><label for="schedule">Please select one schedule</label></dt>
+      <dd><select name="id" id="schedule"></select></dd>
+      <dt><label for="email">Email:</label></dt>
+      <dd><input type="email" name="student_email" id="email"></dd>
+    </dl>
+    <button id="schedule_submit" type="submit">Submit</button>
+  </form>
+
+  <form id="new_student_form" method="POST" action="/api/students">
+    <dl>
+      <dt><label for="student_email">Email:</label></dt>
+      <dd><input type="email" name="email" id="student_email"></dd>
+      <dt><label for="student_name">Name</label></dt>
+      <dd><input type="text" name="name" id="student_name"></dd>
+      <dt><label for="booking_sequence">Booking Sequence</label></dt>
+      <dd><input type="text" name="booking_sequence" id="booking_sequence"></dd>
+    </dl>
+    <button id="student_submit" type="submit">Submit</button>
+  </form>
+</body>
+</html>
