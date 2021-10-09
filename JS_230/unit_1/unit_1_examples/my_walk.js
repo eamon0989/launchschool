@@ -13,6 +13,6 @@ function log(node) {
   console.log(node.nodeName);
 }
 
-walk(document.body, log)
+walk(document.body, log);
 
 
