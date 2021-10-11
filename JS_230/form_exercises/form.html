@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    fieldset {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      outline: none;
+      border: 1px slid #ccc;
+    }
+
+    input:focus {
+      border: 1px solid #52be43;
+      outline: none;
+    }
+
+    .blur {
+      border: 2px solid red;
+    }
+
+    [name="credit_card"] {
+      width: 65px;
+    }
+  </style>
+  <script src="app.js"></script>
+</head>
+<body>
+  <form action="GET" novalidate>
+    <p id="form_errors"></p>
+    <fieldset>
+      <dl>
+        <dt><label for="first_name">First name:</label></dt>
+        <dd>
+          <input type="text" name="first_name" id="first_name" pattern="[a-zA-Z'\s]" required>
+          <span></span>
+        </dd>
+        <dt><label for="last_name">Last name:</label></dt>
+        <dd>
+          <input type="text" name="last_name" id="last_name" pattern="[a-zA-Z'\s]" required>
+          <span></span>
+        </dd>
+        <dt><label for="password">Password:</label></dt>
+        <dd>
+          <input type="password" name="password" id="password" required pattern="[\W\w]{10,}">
+          <span></span>
+        </dd>
+        <dt><label for="email">Email:</label></dt>
+        <dd>
+          <input placeholder="someone@email.com" type="email" name="email" id="email" required pattern=".+@.+">
+          <span></span>
+        </dd>
+        <dt><label for="telephone">Telephone:</label></dt>
+        <dd>
+          <input placeholder="111-222-3333" type="tel" name="telephone" id="telephone" pattern="\d{3}-\d{3}-\d{4}">
+          <span></span>
+        </dd>
+        <dt>
+          <label for="credit_card">Credit Card</label>
+        </dt>
+        <dd>
+          <input type="text" name="credit_card" id="cd1" maxlength="4">
+          <span>-</span>
+          <input type="text" name="credit_card" id="cd2" maxlength="4">
+          <span>-</span>
+          <input type="text" name="credit_card" id="cd3" maxlength="4">
+          <span>-</span>
+          <input type="text" name="credit_card" id="cd4" maxlength="4">
+        </dd>
+        <dd><button>Sign Up</button></dd>
+      </dl>
+    </fieldset>
+  </form>
+</body>
+</html>
