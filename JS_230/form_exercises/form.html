@@ -41,12 +41,12 @@
       <dl>
         <dt><label for="first_name">First name:</label></dt>
         <dd>
-          <input type="text" name="first_name" id="first_name" pattern="[a-zA-Z'\s]" required>
+          <input type="text" name="first_name" id="first_name" pattern="[a-zA-Z'\s]+" required>
           <span></span>
         </dd>
         <dt><label for="last_name">Last name:</label></dt>
         <dd>
-          <input type="text" name="last_name" id="last_name" pattern="[a-zA-Z'\s]" required>
+          <input type="text" name="last_name" id="last_name" pattern="[a-zA-Z'\s]+" required>
           <span></span>
         </dd>
         <dt><label for="password">Password:</label></dt>
@@ -80,5 +80,9 @@
       </dl>
     </fieldset>
   </form>
+  <section>
+    <h2>Serialized Form</h2>
+    <p id="form_output"></p>
+  </section>
 </body>
 </html>

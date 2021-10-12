@@ -6,12 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastName = document.getElementById('last_name');
   let creditCard = document.querySelectorAll('[name="credit_card"]');
   let telephone = document.getElementById('telephone');
-
+  let outputP = document.getElementById('form_output');
 
   form.addEventListener('submit', e => {
     if (!form.checkValidity()) {
       e.preventDefault();
       p.textContent = 'Form cannot be submitted until errors are corrected.';
+    } else {
+      e.preventDefault();
+      let elements = getElements(form.elements);
+      outputP.textContent= elements;
     }
   })
 
@@ -25,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.classList.remove('blur');
         let span = e.target.nextElementSibling;
         if (span) span.textContent = '';
+        p.textContent = '';
+
         if (form.checkValidity()) {
           p.textContent = '';
         }
@@ -56,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   telephone.addEventListener('keydown', e => {
-    if (e.key === "Shift" || e.key === "Tab") return;
-    if (!/\d/.test(e.key)) {
+    if (e.key === "Shift" || e.key === "Tab" || e.key === "Backspace") return;
+    if (!/[\d-]/.test(e.key)) {
       e.preventDefault();
     }
   })
@@ -108,23 +114,25 @@ function invalidPasswordText(e) {
   }
 }
 
-/* 
-if one of the form items is clicked, border turns green
-if anywhere but the form input is clicked, the border is removed
-  unless the input is invalid, then it turns red
+function getElements(formElements) {
+  let keysAndValues = [];
+  let creditCard = '';
 
-*/
-
-
-let cardInputFields = document.querySelectorAll('[name="credit_card"]');
-
-Array.from(cardInputFields).slice(0, cardInputFields.length - 1)
-  .forEach(card => {
-    card.addEventListener('keyup', e => {
-      let string = card.value;
-      let next = card.nextElementSibling.nextElementSibling;
-      if (string.length === 4) {
-        next.focus();
+  for (let index = 0; index < formElements.length; index++) {
+    const element = formElements[index];
+    if (element.type !== 'submit' && element.type !== 'fieldset'
+      && element.value !== '') {
+      if (element.name === 'credit_card') {
+        creditCard += element.value;
+      } else {
+        let key = encodeURIComponent(element.name);
+        let value = encodeURIComponent(element.value);
+        keysAndValues.push(`${key}=${value}`);
       }
-    })
-  });
+    }
+  }
+
+  if (creditCard) keysAndValues.push(`credit_card=${creditCard}`);
+
+  return keysAndValues.join('&');
+}
