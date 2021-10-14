@@ -4,17 +4,21 @@ import { contactsList, tagList } from '/javascripts/classes.js';
 // contactsList.createContact()
 // console.log(contact);
 
-console.log(contactsList);
-console.log(tagList);
+// console.log(contactsList);
+// console.log(tagList);
 // tagList.createTag('buisness');
 // tagList.createTag('work');
 // console.log(tagList.getTag('buisness'));
 // console.log(tagList.getContactsWithTag('work'));
 
 document.addEventListener('DOMContentLoaded', e => {
-  let displayedContacts = 0;
-  let contactsArray = [];
-  // getAndDisplayContacts(contactsArray);
+  // let displayedContacts = 0;
+  // let contactsArray = [];
+  // // getAndDisplayContacts(contactsArray);
+
+  contactsList.getContactsFromServer();
+  contactsList.displayContacts();
+  console.log(contactsList.getContacts());
 
   let createForm = document.getElementById('create-form');
 
@@ -54,17 +58,19 @@ document.addEventListener('DOMContentLoaded', e => {
         let alert = window.confirm('Are you sure you want to delete?');
         if (alert) {
           let id = e.target.parentElement.href.match(/\d+$/)[0];
-          fetch (`http://localhost:3000/api/contacts/${id}`, { method: 'DELETE' })
-            .then(res => {
-              if (res.status === 204) {
-                e.target.parentElement.parentElement.parentElement.remove();
-                displayedContacts -= 1;
-                if (displayedContacts < 1) {
-                  document.getElementById('display-contacts').style.display = 'none';
-                  document.getElementById('no-contacts').style.display ='flex';
-                }
-              }
-            });
+          console.log(id);
+          contactsList.deleteContact(e, id);
+          // fetch (`http://localhost:3000/api/contacts/${id}`, { method: 'DELETE' })
+          //   .then(res => {
+          //     if (res.status === 204) {
+          //       e.target.parentElement.parentElement.parentElement.remove();
+          //       displayedContacts -= 1;
+          //       if (displayedContacts < 1) {
+          //         document.getElementById('display-contacts').style.display = 'none';
+          //         document.getElementById('no-contacts').style.display ='flex';
+          //       }
+          //     }
+          //   });
         }
       }
 
