@@ -5,10 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <link rel="stylesheet" href="stylesheets/style.css">
+  <link rel="stylesheet" href="stylesheets/reset.css">
   <script src="/javascripts/jquery.js"></script>
   <script src="/javascripts/handlebars.js"></script>
 </head>
 <body>
+  <header>
+    <a href="#"><h1>Contact Manager</h1></a>
+    <h2>Using Backbone.js, Localstorage, RequireJS, Handlebar and Bootstrap</h2>
+  </header>
+  <div class="container">
+    <div class="section add-contact">
+      <button>Add Contact</button>
+      <input type="search" name="search" id="search" placeholder="Search">
+    </div>
+  
+    <div class="section no-contacts">
+      <p>There are no contacts.</p>
+      <button>Add Contact</button>
+    </div>
 
+    <!-- <div class="display-contacts"> -->
+      <ul id="contacts-list" class="contacts-list">
+        
+      </ul>
+    <!-- </div> -->
+  
+    <section class="section create-contact">
+      <h3>Create Contact</h3>
+      <form action="api/contacts/" method="POST" id="create-form">
+        <fieldset>
+          <ul>
+            <li><label for="full_name">Full name:</label><input type="text" name="full_name" id="full_name"></li>
+            <li><label for="email">Email address:</label><input type="text" name="email" id="email"></li>
+            <li><label for="phone_number">Telephone number:</label><input type="text" name="phone_number" id="phone_number"></li>
+          </ul>
+        </fieldset>
+        <button type="submit">Submit</button>
+        <button>Cancel</button>
+      </form>
+    </section>
+  </div>
+<script src="/javascripts/app.js"></script>
 </body>
 </html>
