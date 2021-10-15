@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', e => {
     let searchTerm = e.target.value;
     // console.log(e.target.value);
     contactsList.searchContacts(searchTerm);
-
   })
 
   document.addEventListener('click', e => {
