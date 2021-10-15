@@ -104,11 +104,24 @@ document.addEventListener('DOMContentLoaded', e => {
           document.getElementById('no-contacts').style.display ='flex';
         }
       }
+
+      if (e.target.id === 'cancel-edit-contact') {
+        document.getElementById('edit-contact').style.display = 'none';
+        document.getElementById('display-contacts').style.display ='flex';
+
+        if (contactsList.contactsListEmpty()) {
+          document.getElementById('no-contacts').style.display ='flex';
+        }
+      }
     }
 
     if (e.target.nodeName === 'A') {
       // console.log(e.target.parentElement.classList);
-      if (e.target.parentElement.classList.includes === 'tag-links') {
+      console.log(e.target);
+      console.log(e.target.parentElement.firstElementChild.nodeName === 'DL');
+
+      if (e.target.parentElement.firstElementChild.nodeName === 'DL') {
+        console.log(e.target);
         e.preventDefault();
         let tagName = e.target.textContent;
         console.log('test');

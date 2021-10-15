@@ -18,7 +18,7 @@
   <div class="container">
     <div class="section add-contact">
       <button>Add Contact</button>
-      <input type="search" name="search" id="search_bar" placeholder="Search" incremental>
+      <input type="search" name="search" id="search_bar" class="input" placeholder="Search" incremental>
     </div>
 
     <div class="section no-contacts" id="no-contacts">
@@ -69,14 +69,17 @@
     </section>
 
     <div id="create-tags">
-      <form class="create-tags" id="create-tag-form">
+      <form class="create-tags section" id="create-tag-form">
         <fieldset>
           <label for="create-tag">Create a new tag here:</label>
-          <input type="text" name="create-tag" id="create-tag">
+          <input class="input" type="text" placeholder="Tag" name="create-tag" id="create-tag">
         </fieldset>
         <button type="submit">Submit</button>
 
       </form>
+    </div>
+
+    <div id="no-matching-contacts">
     </div>
   </div>
 

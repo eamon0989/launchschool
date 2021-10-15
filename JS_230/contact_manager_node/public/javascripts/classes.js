@@ -203,6 +203,17 @@ class ContactsList {
     } else {
       let filtered = contacts.filter(contact => contact.full_name.startsWith(searchTerm));
       this.displayContacts(filtered);
+      console.log(filtered.length);
+      let div = document.getElementById('no-matching-contacts');
+      console.log(div);
+      if (filtered.length < 1 && !(div.firstElementChild)) {
+        console.log(filtered.length);
+        let p = document.createElement('p');
+        p.textContent = `There are no contacts starting with ${searchTerm}.`;
+        div.appendChild(p);
+        div.style.display = 'flex';
+        console.log(p);
+      }
     }
 
 
