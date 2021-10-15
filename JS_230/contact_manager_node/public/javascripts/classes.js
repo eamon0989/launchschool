@@ -14,13 +14,34 @@ class TagList {
     this.tags = [];
   }
 
+  getAllTags() {
+
+  }
+
   createTag(tagName) {
     let tag = new Tag(tagName);
     this.tags.push(tag);
+    return tag;
+  }
+
+  async postTagToServer(tagName) {
+    let tag = this.createTag(tagName);
+    fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
+    body: JSON.stringify(tag) });
   }
 
   getTags() {
     return this.tags;
+  }
+
+  async getTagsFromServer() {
+    return await fetch('/api/tags')
+      .then(res => res.json())
+      .then(tags => {
+        tags.forEach(tag => {
+          this.tags.push(tag);
+        })
+      });
   }
 
   getTag(tagName) {
@@ -39,7 +60,7 @@ class TagList {
 
 class Tag {
   constructor(tag) {
-    this.tag = tag;
+    this.tag_name = tag;
     this.contactsWithTag = [];
   }
 }
@@ -51,7 +72,7 @@ class ContactsList {
 
   findContactById(id) {
     let contacts = this.getContacts();
-    let contact = contacts.find(obj => obj.id === id);
+    let contact = contacts.find(obj => obj.id === Number(id));
     return contact;
   }
 
@@ -61,66 +82,96 @@ class ContactsList {
   }
 
   deleteContact(e, id) {
-    // let contact = this.findContactById(e, id);
     let index = this.findContactIndex(id);
     fetch (`http://localhost:3000/api/contacts/${id}`, { method: 'DELETE' })
     .then(res => {
-      console.log(res.status);
       if (res.status === 204) {
-        this.contacts.splice(1, index);
-        
+        this.contacts.splice(index, 1);
         e.target.parentElement.parentElement.parentElement.remove();
-        // displayedContacts -= 1;
-        // if (displayedContacts < 1) {
-        //   document.getElementById('display-contacts').style.display = 'none';
-        //   document.getElementById('no-contacts').style.display ='flex';
-        // }
+
+        if (this.contactsListEmpty()) {
+          document.getElementById('display-contacts').style.display = 'none';
+          document.getElementById('no-contacts').style.display ='flex';
+        }
       }
     });
   }
 
-  editContact(id) {
+  displayEditContactForm(id) {
+    let contact = this.findContactById(id);
+    let form = document.getElementById('edit-contact');
+    let editName = document.getElementById('edit_full_name');
+    let editEmail = document.getElementById('edit_email');
+    let editPhone = document.getElementById('edit_phone_number');
+    let editTags = document.getElementById('edit_tags');
+    let editId = document.getElementById('edit_id');
+    editName.value = contact.full_name;
+    editEmail.value = contact.email;
+    editPhone.value = contact.phone_number;
+    editTags.value = contact.tags;
+    editId.value = contact.id;
+    form.style.display = 'flex';
+  }
 
+  async saveEditedContactToServer(updatedContact) {
+    let id = updatedContact.id;
+    let contact = this.findContactById(id);
+
+    let newContact = await fetch(`/api/contacts/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, 
+    body: JSON.stringify(updatedContact)}).then(res => res.json());
+    this.contacts.splice(this.contacts.indexOf(contact), 1, newContact);
+    this.displayContacts();
   }
 
   async createContact(contactObject) {
     let contact = new Contact(contactObject);
-    // if (!this.findContactById(contact)) {
-      this.contacts.push(contact);
-    // }
-    this.displayNewContact(contact);
+    this.contacts.push(contact);
+    this.displayNewContact();
   }
 
   async getContactsFromServer() {
-    // this.contacts = [];
     fetch('/api/contacts').then(res => res.json())
     .then(contacts => {
        contacts.forEach(async contact => {
-        // let contactWithId = await this.saveContactToServer(contact);
         this.createContact(contact);
       })
-    })
+    });
   }
 
   getContacts() {
     return this.contacts;
   }
 
-  displayNewContact(contact) {
-    createContactCard(contact);
+  displayNewContact() {
+    let newContact = this.contacts[this.contacts.length - 1];
+    createContactCard(newContact);
+    showContactsDiv();
   }
 
   displayContacts() {
     let contacts = this.getContacts();
+
+    let ul = document.getElementById('contacts-list');
+    while (ul.lastElementChild) {
+      ul.removeChild(ul.lastElementChild);
+    }
+
     contacts.forEach(contact => {
       createContactCard(contact);
     })
+
+    if (!this.contactsListEmpty()) {
+      showContactsDiv();
+    }
   }
 
   async saveContactToServer(contact) {
     return await fetch('/api/contacts/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
     body: JSON.stringify(contact)})
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(contact => {
+      this.createContact(contact);
+    });
   }
 
   contactsListEmpty() {
@@ -177,4 +228,9 @@ function createContactCard(contact) {
   div3.appendChild(editA);
   div3.appendChild(deleteA);
   div3.classList.add('buttons-div');
+}
+
+function showContactsDiv() {
+  document.getElementById('display-contacts').style.display = 'flex';
+  document.getElementById('no-contacts').style.display ='none';
 }

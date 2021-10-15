@@ -49,7 +49,7 @@
     </section>
 
     <div id="create-tags">
-      <form action="" class="create-tags">
+      <form class="create-tags" id="create-tag-form">
         <fieldset>
           <label for="create-tag">Create a new tag here:</label>
           <input type="text" name="create-tag" id="create-tag">
@@ -58,6 +58,23 @@
 
       </form>
     </div>
+
+    <section class="section edit-contact" id="edit-contact">
+      <h3>Edit Contact</h3>
+      <form action="api/contacts/" method="POST" id="edit-form">
+        <fieldset>
+          <ul>
+            <li><label for="edit_id"></label><input hidden type="text" name="id" id="edit_id"></li>
+            <li><label for="edit_full_name">Full name:</label><input type="text" name="full_name" id="edit_full_name"></li>
+            <li><label for="edit_email">Email address:</label><input type="text" name="email" id="edit_email"></li>
+            <li><label for="edit_phone_number">Telephone number:</label><input type="text" name="phone_number" id="edit_phone_number"></li>
+            <li><label for="edit_tags">Tags:</label><select name="tags" id="edit_tags"></select></li>
+          </ul>
+        </fieldset>
+        <button type="submit">Submit</button>
+        <button type="reset" id="cancel-edit-contact">Cancel</button>
+      </form>
+    </section>
   </div>
 
 

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const contactManager = require('./lib/contact_manager');
+const tagManager = require('./lib/tag_manager');
 const helpers = require('./lib/helpers');
 
 const app = express();
@@ -34,6 +35,25 @@ app.post('/api/contacts', (req, res) => {
   } else {
     res.status(400).end();
   }
+});
+
+app.get('/secret', function (req, res, next) {
+  console.log('Accessing the secret section ...')
+})
+
+app.post('/api/tags', (req, res) => {
+  let tagAttrs = helpers.extractTagAttrs(req.body);
+
+  let tag = tagManager.add(tagAttrs);
+  if (tag) {
+    res.status(201).json(tag);
+  } else {
+    res.status(400).end();
+  }
+});
+
+app.get('/api/tags', (req, res) => {
+  res.json(tagManager.getAll());
 });
 
 app.put('/api/contacts/:id', (req, res) => {
