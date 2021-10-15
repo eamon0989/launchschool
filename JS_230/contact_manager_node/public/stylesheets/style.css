@@ -67,7 +67,7 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   /* grid-template-rows: auto; */
-  gap: 1rem;
+  /* gap: 1rem; */
 }
 
 .contacts-list-items {
@@ -116,7 +116,11 @@ button {
   margin: 1rem;
 }
 
-/* .display-contacts {} */
+.display-contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .create-tags {
   background-color: darkgrey;
@@ -128,4 +132,17 @@ button {
   /* justify-content: space-between;
    */
   /* padding: 1rem; */
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.tag-links {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag-links a {
+  margin: 0 3px;
 }

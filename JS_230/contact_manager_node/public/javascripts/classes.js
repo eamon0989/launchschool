@@ -14,10 +14,6 @@ class TagList {
     this.tags = [];
   }
 
-  getAllTags() {
-
-  }
-
   createTag(tagName) {
     let tag = new Tag(tagName);
     this.tags.push(tag);
@@ -25,9 +21,17 @@ class TagList {
   }
 
   async postTagToServer(tagName) {
-    let tag = this.createTag(tagName);
-    fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
-    body: JSON.stringify(tag) });
+    if (!this.tagAlreadyExists(tagName)) {
+      let tag = this.createTag(tagName);
+      fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(tag) });
+    } else {
+      alert('Tag already exists.')
+    }
+  }
+
+  tagAlreadyExists(tagName) {
+    return this.getTag(tagName);
   }
 
   getTags() {
@@ -46,13 +50,31 @@ class TagList {
 
   getTag(tagName) {
     let tags = this.getTags();
-    let tag = tags.find(tag => tag.tag === tagName);
+    let tag = tags.find(tag => tag.tag_name === tagName);
     return tag;
   }
 
   getContactsWithTag(tagName) {
     let tag = this.getTag(tagName);
     return tag.contactsWithTag;
+  }
+
+  addTagsToForm(form) {
+    let select = form.querySelector('select');
+    // console.log(form);
+    // let tagsSelectElement = document.getElementById('create-contact-form-tags');
+    while (select.firstElementChild) {
+      select.firstElementChild.remove();
+    }
+    let tags = this.getTags();
+
+    tags.forEach(tag => {
+      let option = document.createElement('option');
+      
+      option.value = tag.tag_name;
+      option.textContent = tag.tag_name;
+      select.appendChild(option);
+    })
   }
 
 
@@ -62,6 +84,10 @@ class Tag {
   constructor(tag) {
     this.tag_name = tag;
     this.contactsWithTag = [];
+  }
+
+  assignContactToTag(id) {
+    this.contactsWithTag.push(id);
   }
 }
 
@@ -111,6 +137,7 @@ class ContactsList {
     editTags.value = contact.tags;
     editId.value = contact.id;
     form.style.display = 'flex';
+    document.getElementById('display-contacts').style.display = 'none';
   }
 
   async saveEditedContactToServer(updatedContact) {
@@ -126,7 +153,26 @@ class ContactsList {
   async createContact(contactObject) {
     let contact = new Contact(contactObject);
     this.contacts.push(contact);
+    this.getTags(contact);
     this.displayNewContact();
+  }
+
+  getTags(contact) {
+    let tags;
+
+    if (contact.tags) {
+      tags = contact.tags?.split(',')
+    } else {
+      tags = [];
+    }
+
+    // let tags = contact.tags?.split(',');
+    let id = contact.id;
+    tags.forEach(tag => {
+      let tagObj = tagList.getTag(tag); 
+      tagObj.contactsWithTag.push(id);
+      // console.log(tagObj);
+    })
   }
 
   async getContactsFromServer() {
@@ -148,8 +194,24 @@ class ContactsList {
     showContactsDiv();
   }
 
-  displayContacts() {
+  searchContacts(searchTerm) {
+    console.log(searchTerm);
     let contacts = this.getContacts();
+    // console.log(contacts);
+    if (!searchTerm || searchTerm.length === 0) {
+      this.displayContacts();
+    } else {
+      let filtered = contacts.filter(contact => contact.full_name.startsWith(searchTerm));
+      this.displayContacts(filtered);
+    }
+
+
+  }
+
+  displayContacts(contacts) {
+    if (!contacts) {
+      contacts = this.getContacts();
+    }
 
     let ul = document.getElementById('contacts-list');
     while (ul.lastElementChild) {
@@ -157,12 +219,27 @@ class ContactsList {
     }
 
     contacts.forEach(contact => {
+      // console.log(contact);
       createContactCard(contact);
     })
 
     if (!this.contactsListEmpty()) {
       showContactsDiv();
     }
+  }
+
+  displayContactsWithTag(tagName) {
+    let tag = tagList.getTag(tagName);
+    let contactsIds = tag.contactsWithTag;
+    let showContactsBtn = document.getElementById('show-all-contacts');
+
+    let contacts = [];
+    contactsIds.forEach(id => {
+      let contact = this.findContactById(id);
+      contacts.push(contact);
+    });
+    showContactsBtn.removeAttribute('hidden');
+    this.displayContacts(contacts);
   }
 
   async saveContactToServer(contact) {
@@ -185,9 +262,10 @@ class ContactsList {
 
 export let contactsList = new ContactsList();
 export let tagList = new TagList();
-
+export let tagLinks;
 
 function createContactCard(contact) {
+  // console.log(contact);
   let ul = document.getElementById('contacts-list');
   let li = document.createElement('li');
   li.classList.add('contacts-list-items')
@@ -203,16 +281,54 @@ function createContactCard(contact) {
   div2.appendChild(dl);
   let dt = document.createElement('dt');
   dt.textContent = 'Phone Number:';
+  dt.classList.add('bold');
   let dd = document.createElement('dd');
   dd.textContent = contact.phone_number;
   let dt2 = document.createElement('dt');
   dt2.textContent = 'Email:';
+  dt2.classList.add('bold');
   let dd2 = document.createElement('dd');
   dd2.textContent = contact.email;
+
   dl.appendChild(dt);
   dl.appendChild(dd);
   dl.appendChild(dt2);
   dl.appendChild(dd2);
+
+  let div4 = document.createElement('div');
+  li.appendChild(div4);
+  let dl2 = document.createElement('dl');
+  div4.appendChild(dl2);
+
+  let tags = contact.tags;
+  if (tags) {
+
+    let dt3 = document.createElement('dt');
+    dt3.textContent = 'Tags:';
+    dt3.classList.add('bold');
+    dl2.appendChild(dt3);
+
+    tags?.split(',').forEach(tag => {
+      let a = document.createElement('a');
+      div4.classList.add('tag-links');
+      a.textContent = tag;
+      // let dd = document.createElement('dd');
+      // dd.textContent = tag;
+      // a.appendChild(dd);
+      a.href = '#';
+      div4.appendChild(a);
+    })
+  }
+
+
+
+
+
+
+
+
+
+  
   let div3= document.createElement('div');
   li.appendChild(div3);
   let editA = document.createElement('a');
@@ -228,6 +344,8 @@ function createContactCard(contact) {
   div3.appendChild(editA);
   div3.appendChild(deleteA);
   div3.classList.add('buttons-div');
+  tagLinks = document.querySelectorAll('tag-links');
+
 }
 
 function showContactsDiv() {

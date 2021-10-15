@@ -18,7 +18,7 @@
   <div class="container">
     <div class="section add-contact">
       <button>Add Contact</button>
-      <input type="search" name="search" id="search" placeholder="Search">
+      <input type="search" name="search" id="search_bar" placeholder="Search" incremental>
     </div>
 
     <div class="section no-contacts" id="no-contacts">
@@ -30,6 +30,7 @@
       <ul id="contacts-list" class="contacts-list">
         
       </ul>
+      <button hidden id="show-all-contacts">Show all contacts</button>
     </div>
   
     <section class="section create-contact" id="create-contact">
@@ -40,11 +41,30 @@
             <li><label for="full_name">Full name:</label><input type="text" name="full_name" id="full_name"></li>
             <li><label for="email">Email address:</label><input type="text" name="email" id="email"></li>
             <li><label for="phone_number">Telephone number:</label><input type="text" name="phone_number" id="phone_number"></li>
-            <li><label for="tags">Tags:</label><select name="tags" id="tags"></select></li>
+            <li><label for="tags">Tags:</label><select multiple name="tags" id="create-contact-form-tags"></select></li>
           </ul>
         </fieldset>
         <button type="submit">Submit</button>
         <button type="reset" id="cancel-create-contact">Cancel</button>
+      </form>
+    </section>
+
+
+
+    <section class="section edit-contact" id="edit-contact">
+      <h3>Edit Contact</h3>
+      <form action="api/contacts/" method="POST" id="edit-form">
+        <fieldset>
+          <ul>
+            <li><label for="edit_id"></label><input hidden type="text" name="id" id="edit_id"></li>
+            <li><label for="edit_full_name">Full name:</label><input type="text" name="full_name" id="edit_full_name"></li>
+            <li><label for="edit_email">Email address:</label><input type="text" name="email" id="edit_email"></li>
+            <li><label for="edit_phone_number">Telephone number:</label><input type="text" name="phone_number" id="edit_phone_number"></li>
+            <li><label for="edit_tags">Tags:</label><select multiple name="tags" id="edit_tags"></select></li>
+          </ul>
+        </fieldset>
+        <button type="submit">Submit</button>
+        <button type="reset" id="cancel-edit-contact">Cancel</button>
       </form>
     </section>
 
@@ -58,23 +78,6 @@
 
       </form>
     </div>
-
-    <section class="section edit-contact" id="edit-contact">
-      <h3>Edit Contact</h3>
-      <form action="api/contacts/" method="POST" id="edit-form">
-        <fieldset>
-          <ul>
-            <li><label for="edit_id"></label><input hidden type="text" name="id" id="edit_id"></li>
-            <li><label for="edit_full_name">Full name:</label><input type="text" name="full_name" id="edit_full_name"></li>
-            <li><label for="edit_email">Email address:</label><input type="text" name="email" id="edit_email"></li>
-            <li><label for="edit_phone_number">Telephone number:</label><input type="text" name="phone_number" id="edit_phone_number"></li>
-            <li><label for="edit_tags">Tags:</label><select name="tags" id="edit_tags"></select></li>
-          </ul>
-        </fieldset>
-        <button type="submit">Submit</button>
-        <button type="reset" id="cancel-edit-contact">Cancel</button>
-      </form>
-    </section>
   </div>
 
 

@@ -1,34 +1,26 @@
 [
   {
-    "tag_name": "test",
+    "tag_name": "Business",
     "contactsWithTag": []
   },
   {
-    "tag_name": "test",
+    "tag_name": "Work",
     "contactsWithTag": []
   },
   {
-    "tag_name": "testing",
+    "tag_name": "Football",
     "contactsWithTag": []
   },
   {
-    "tag_name": "testing123",
+    "tag_name": "School",
     "contactsWithTag": []
   },
   {
-    "tag_name": "new tag",
+    "tag_name": "Coding",
     "contactsWithTag": []
   },
   {
     "tag_name": "new tagger",
-    "contactsWithTag": []
-  },
-  {
-    "tag_name": "new taggers",
-    "contactsWithTag": []
-  },
-  {
-    "tag_name": "432234",
     "contactsWithTag": []
   }
 ]
