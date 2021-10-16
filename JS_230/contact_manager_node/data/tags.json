@@ -1,16 +1,14 @@
 [
   {
-    "tag_name": "test",
+    "tag_name": "Business",
     "contactsWithTag": []
   },
   {
-    "tag_name": "testing123",
-    "contactsWithTag": [
-      1
-    ]
+    "tag_name": "Launch School",
+    "contactsWithTag": []
   },
   {
-    "tag_name": "new tagger",
+    "tag_name": "Family",
     "contactsWithTag": []
   }
 ]
