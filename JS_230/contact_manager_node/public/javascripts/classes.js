@@ -62,8 +62,7 @@ class TagList {
 
   getTag(tagName) {
     let tags = this.getTags();
-    let tag = tags.find(tag => tag.tag_name === tagName);
-    return tag;
+    return tags.find(tag => tag.tag_name === tagName);
   }
 
   getContactsWithTag(tagName) {
@@ -73,8 +72,6 @@ class TagList {
 
   addTagsToForm(form) {
     let select = form.querySelector('select');
-    // console.log(form);
-    // let tagsSelectElement = document.getElementById('create-contact-form-tags');
     while (select.firstElementChild) {
       select.firstElementChild.remove();
     }
@@ -222,28 +219,24 @@ class ContactsList {
   }
 
   searchContacts(searchTerm) {
-    console.log(searchTerm);
     let contacts = this.getContacts();
-    // console.log(contacts);
+    let div = document.getElementById('no-matching-contacts');
+
     if (!searchTerm || searchTerm.length === 0) {
       this.displayContacts();
+      div.style.display = 'none';
     } else {
-      let filtered = contacts.filter(contact => contact.full_name.startsWith(searchTerm));
+      let filtered = contacts.filter(contact =>
+        contact.full_name.toLowerCase().startsWith(searchTerm.toLowerCase()));
       this.displayContacts(filtered);
-      console.log(filtered.length);
-      let div = document.getElementById('no-matching-contacts');
-      console.log(div);
-      if (filtered.length < 1 && !(div.firstElementChild)) {
-        console.log(filtered.length);
-        let p = document.createElement('p');
+      div.style.display = 'none';
+
+      if (filtered.length < 1) {
+        let p = div.querySelector('p');
         p.textContent = `There are no contacts starting with ${searchTerm}.`;
-        div.appendChild(p);
         div.style.display = 'flex';
-        console.log(p);
       }
     }
-
-
   }
 
   displayContacts(contacts) {

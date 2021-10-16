@@ -12,5 +12,40 @@
     "email": "eamon0989@gmail.com",
     "tags": "Coding,new tagger",
     "id": 4
+  },
+  {
+    "full_name": "Eamon O Callaghan",
+    "phone_number": "631002624",
+    "email": "eamon0989@gmail.com",
+    "tags": "Work",
+    "id": 5
+  },
+  {
+    "full_name": "Eamon O Callaghan",
+    "phone_number": "631002624",
+    "email": "eamon0989@gmail.com",
+    "tags": "Football",
+    "id": 7
+  },
+  {
+    "full_name": "Eamon O Callaghan",
+    "phone_number": "631002624",
+    "email": "eamon0989@gmail.com",
+    "tags": null,
+    "id": 8
+  },
+  {
+    "full_name": "Eamon O Callaghan",
+    "phone_number": "631002624",
+    "email": "eamon0989@gmail.com",
+    "tags": "Business,Work,Football,School,Coding",
+    "id": 11
+  },
+  {
+    "full_name": "Paula Lopeztsts",
+    "phone_number": "631000291",
+    "email": "paula.c.lopez@gmail.com",
+    "tags": "Work",
+    "id": 12
   }
 ]

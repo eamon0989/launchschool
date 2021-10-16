@@ -1,6 +1,5 @@
-import { contactsList, tagList, tagLinks } from '/javascripts/classes.js';
+import { contactsList, tagList } from '/javascripts/classes.js';
 tagList.getTagsFromServer().then(_ => contactsList.getContactsFromServer());
-
 
 document.addEventListener('DOMContentLoaded', e => {
   let createForm = document.getElementById('create-form');
@@ -10,23 +9,12 @@ document.addEventListener('DOMContentLoaded', e => {
   let tagForm = document.getElementById('create-tag-form');
   let showContactsBtn = document.getElementById('show-all-contacts');
   let searchBox = document.getElementById('search_bar');
-
   tagList.getTags();
 
   createForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    let data = new FormData(createForm);
-    let json = {};
-
-    for (let prop of data) {
-      if (!json[prop[0]]) {
-        json[prop[0]] = prop[1];
-      } else {
-        json[prop[0]] += `,${prop[1]}`;
-      }
-    }
-
+    let json = makeJsonFromForm(createForm);
     contactsList.saveContactToServer(json);
     createForm.reset();
     createContactDiv.style.display = 'none';
@@ -35,32 +23,14 @@ document.addEventListener('DOMContentLoaded', e => {
   editForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    let data = new FormData(editForm);
-    let json = {};
-
-    for (let prop of data) {
-      console.log(prop);
-      if (!json[prop[0]]) {
-        json[prop[0]] = prop[1];
-      } else {
-        json[prop[0]] += `,${prop[1]}`;
-      }
-    }
-
-    if (!json.tags) {
-      json.tags = '';
-    }
-
+    let json = makeJsonFromForm(editForm);
     contactsList.saveEditedContactToServer(json);
     editForm.reset();
     editFormDiv.style.display = 'none';
   })
 
-
-
   tagForm.addEventListener('submit', e => {
     e.preventDefault();
-    console.log('tags');
     let tagInput = document.getElementById('create-tag');
     let tag = tagInput.value;
     tagList.postTagToServer(tag);
@@ -136,3 +106,18 @@ document.addEventListener('DOMContentLoaded', e => {
     showContactsBtn.setAttribute('hidden', 'hidden');
   })
 })
+
+function makeJsonFromForm(form) {
+  let data = new FormData(form);
+  let json = {};
+
+  for (let prop of data) {
+    if (!json[prop[0]]) {
+      json[prop[0]] = prop[1];
+    } else {
+      json[prop[0]] += `,${prop[1]}`;
+    }
+  }
+
+  return json;
+}
