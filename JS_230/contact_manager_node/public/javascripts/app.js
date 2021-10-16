@@ -1,6 +1,5 @@
-import { contactsList, tagList, tagLinks } from '/javascripts/classes.js';
+import { contactsList, tagList } from '/javascripts/classes.js';
 tagList.getTagsFromServer().then(_ => contactsList.getContactsFromServer());
-
 
 document.addEventListener('DOMContentLoaded', e => {
   let createForm = document.getElementById('create-form');
@@ -9,24 +8,12 @@ document.addEventListener('DOMContentLoaded', e => {
   let tagForm = document.getElementById('create-tag-form');
   let showContactsBtn = document.getElementById('show-all-contacts');
   let searchBox = document.getElementById('search_bar');
-
   tagList.getTags();
-  // let tagLinks = document.querySelectorAll('tag-links');
 
   createForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    let data = new FormData(createForm);
-    let json = {};
-
-    for (let prop of data) {
-      if (!json[prop[0]]) {
-        json[prop[0]] = prop[1];
-      } else {
-        json[prop[0]] += `,${prop[1]}`;
-      }
-    }
-
+    let json = makeJsonFromForm(createForm);
     contactsList.saveContactToServer(json);
     createForm.reset();
     createContactDiv.style.display = 'none';
@@ -35,23 +22,14 @@ document.addEventListener('DOMContentLoaded', e => {
   editForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    let data = new FormData(editForm);
-    let json = {};
-
-    for (let prop of data) {
-      json[prop[0]] = prop[1];
-    }
-
+    let json = makeJsonFromForm(editForm);
     contactsList.saveEditedContactToServer(json);
     editForm.reset();
     editForm.style.display = 'none';
   })
 
-
-
   tagForm.addEventListener('submit', e => {
     e.preventDefault();
-    console.log('tags');
     let tagInput = document.getElementById('create-tag');
     let tag = tagInput.value;
     tagList.postTagToServer(tag);
@@ -59,11 +37,8 @@ document.addEventListener('DOMContentLoaded', e => {
     alert(`${tag} tag added!`)
   })
 
-  // let searchTerm = '';
-
   searchBox.addEventListener('keyup', e => {
     let searchTerm = e.target.value;
-    // console.log(e.target.value);
     contactsList.searchContacts(searchTerm);
   })
 
@@ -116,15 +91,9 @@ document.addEventListener('DOMContentLoaded', e => {
     }
 
     if (e.target.nodeName === 'A') {
-      // console.log(e.target.parentElement.classList);
-      console.log(e.target);
-      console.log(e.target.parentElement.firstElementChild.nodeName === 'DL');
-
       if (e.target.parentElement.firstElementChild.nodeName === 'DL') {
-        console.log(e.target);
         e.preventDefault();
         let tagName = e.target.textContent;
-        console.log('test');
         contactsList.displayContactsWithTag(tagName);
       }
     }
@@ -135,3 +104,18 @@ document.addEventListener('DOMContentLoaded', e => {
     showContactsBtn.setAttribute('hidden', 'hidden');
   })
 })
+
+function makeJsonFromForm(form) {
+  let data = new FormData(form);
+  let json = {};
+
+  for (let prop of data) {
+    if (!json[prop[0]]) {
+      json[prop[0]] = prop[1];
+    } else {
+      json[prop[0]] += `,${prop[1]}`;
+    }
+  }
+
+  return json;
+}

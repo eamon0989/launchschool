@@ -45,14 +45,14 @@
     "full_name": "Eamon O Callaghan",
     "phone_number": "631002624",
     "email": "eamon0989@gmail.com",
-    "tags": "School",
-    "id": 10
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
     "tags": "Business,Work,Football,School,Coding",
     "id": 11
+  },
+  {
+    "full_name": "Paula Lopeztsts",
+    "phone_number": "631000291",
+    "email": "paula.c.lopez@gmail.com",
+    "tags": "Work",
+    "id": 12
   }
 ]
