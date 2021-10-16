@@ -6,7 +6,7 @@
 
 body {
   display: grid;
-  grid-template-columns: 1fr max(80ch) 1fr;
+  grid-template-columns: 1fr minmax(18ch, 95ch) 1fr;
   grid-template-rows: auto auto auto;
   grid-template-areas: 'header header header' '. main .' '. footer .';
 }
@@ -39,11 +39,13 @@ h3 {
 
 .container {
   grid-area: main;
+  place-content: ;
 }
 
 .add-contact {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .buttons-div {
@@ -69,6 +71,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: center;
   /* max-width: 200px; */
   /* grid-template-columns: 1fr 1fr 1fr; */
   /* grid-template-rows: auto; */
@@ -84,14 +87,22 @@ header a {
 .contacts-list-items {
   padding: 1rem;
   display: flex;
-  max-width: 23ch;
+  max-width: 25ch;
   flex-direction: column;
   justify-content: space-between;
   align-items: baseline;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  margin: 0.8rem;
+  border-radius: 4px;
 }
 
 .contacts-list-items div {
   margin: 0.5rem 0;
+}
+
+select {
+  width: auto;
 }
 
 
@@ -99,6 +110,8 @@ section li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   padding: 1rem;
 }
 

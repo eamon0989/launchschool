@@ -38,10 +38,10 @@
       <form action="api/contacts/" method="POST" id="create-form">
         <fieldset>
           <ul>
-            <li><label for="full_name">Full name:</label><input type="text" name="full_name" id="full_name"></li>
-            <li><label for="email">Email address:</label><input type="text" name="email" id="email"></li>
-            <li><label for="phone_number">Telephone number:</label><input type="text" name="phone_number" id="phone_number"></li>
-            <li><label for="tags">Tags:</label><select multiple name="tags" id="create-contact-form-tags"></select></li>
+            <li><label for="full_name">Full name:</label><input class="input" type="text" name="full_name" id="full_name"></li>
+            <li><label for="email">Email address:</label><input class="input" type="text" name="email" id="email"></li>
+            <li><label for="phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="phone_number"></li>
+            <li><label for="tags">Tags:</label><select class="input" multiple name="tags" id="create-contact-form-tags"></select></li>
           </ul>
         </fieldset>
         <button type="submit">Submit</button>
@@ -56,11 +56,11 @@
       <form action="api/contacts/" method="POST" id="edit-form">
         <fieldset>
           <ul>
-            <li><label for="edit_id"></label><input hidden type="text" name="id" id="edit_id"></li>
-            <li><label for="edit_full_name">Full name:</label><input type="text" name="full_name" id="edit_full_name"></li>
-            <li><label for="edit_email">Email address:</label><input type="text" name="email" id="edit_email"></li>
-            <li><label for="edit_phone_number">Telephone number:</label><input type="text" name="phone_number" id="edit_phone_number"></li>
-            <li><label for="edit_tags">Tags:</label><select multiple name="tags" id="edit_tags"></select></li>
+            <li><label for="edit_id"></label><input class="input" hidden type="text" name="id" id="edit_id"></li>
+            <li><label for="edit_full_name">Full name:</label><input class="input" type="text" name="full_name" id="edit_full_name"></li>
+            <li><label for="edit_email">Email address:</label><input class="input" type="text" name="email" id="edit_email"></li>
+            <li><label for="edit_phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="edit_phone_number"></li>
+            <li><label for="edit_tags">Tags:</label><select class="input" multiple name="tags" id="edit_tags"></select></li>
           </ul>
         </fieldset>
         <button type="submit">Submit</button>
