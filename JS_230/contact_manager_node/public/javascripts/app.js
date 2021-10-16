@@ -35,61 +35,18 @@ document.addEventListener('DOMContentLoaded', e => {
     let tag = tagInput.value;
     tagList.postTagToServer(tag);
     tagForm.reset();
-    alert(`${tag} tag added!`)
   })
 
-  searchBox.addEventListener('keyup', e => {
+  searchBox.addEventListener('input', e => {
+    let div = document.getElementById('showing-filtered');
+    div.style.display = 'none';
     let searchTerm = e.target.value;
     contactsList.searchContacts(searchTerm);
   })
 
   document.addEventListener('click', e => {
-    // e.preventDefault();
     if (e.target.nodeName === 'BUTTON') {
-      let editRegex = new RegExp('/contacts/edit/', 'gi');
-      if (editRegex.test(e.target.parentElement.href)) {
-        e.preventDefault();
-        let id = e.target.parentElement.href.match(/\d+$/)[0];
-
-        tagList.addTagsToForm(editForm);
-        contactsList.displayEditContactForm(id);
-      }
-  
-      let deleteRegex = new RegExp('/contacts/delete/', 'gi');
-      if (deleteRegex.test(e.target.parentElement.href)) {
-        e.preventDefault();
-        let alert = window.confirm('Are you sure you want to delete?');
-        if (alert) {
-          let id = e.target.parentElement.href.match(/\d+$/)[0];
-          contactsList.deleteContact(e, id);
-        }
-      }
-
-      if (e.target.textContent === 'Add Contact') {
-        tagList.addTagsToForm(createForm);
-
-        document.getElementById('create-contact').style.display = 'flex';
-        document.getElementById('no-contacts').style.display ='none';
-        document.getElementById('display-contacts').style.display ='none';
-      }
-
-      if (e.target.id === 'cancel-create-contact') {
-        document.getElementById('create-contact').style.display = 'none';
-        document.getElementById('display-contacts').style.display ='flex';
-
-        if (contactsList.contactsListEmpty()) {
-          document.getElementById('no-contacts').style.display ='flex';
-        }
-      }
-
-      if (e.target.id === 'cancel-edit-contact') {
-        document.getElementById('edit-contact').style.display = 'none';
-        document.getElementById('display-contacts').style.display ='flex';
-
-        if (contactsList.contactsListEmpty()) {
-          document.getElementById('no-contacts').style.display ='flex';
-        }
-      }
+      buttonEvents(e);
     }
 
     if (e.target.nodeName === 'A') {
@@ -104,6 +61,8 @@ document.addEventListener('DOMContentLoaded', e => {
   showContactsBtn.addEventListener('click', e => {
     contactsList.displayContacts();
     showContactsBtn.setAttribute('hidden', 'hidden');
+    let div = document.getElementById('showing-filtered');
+    div.style.display = 'none';
   })
 })
 
@@ -119,5 +78,62 @@ function makeJsonFromForm(form) {
     }
   }
 
+  if (!json.tags) {
+    json.tags = '';
+  }
+
   return json;
+}
+
+function buttonEvents(e) {
+  let createForm = document.getElementById('create-form');
+  let editForm = document.getElementById('edit-form');
+
+  let editRegex = new RegExp('/contacts/edit/', 'gi');
+  if (editRegex.test(e.target.parentElement.href)) {
+    e.preventDefault();
+    let id = e.target.parentElement.href.match(/\d+$/)[0];
+
+    tagList.addTagsToForm(editForm);
+    contactsList.displayEditContactForm(id);
+  }
+
+  let deleteRegex = new RegExp('/contacts/delete/', 'gi');
+  if (deleteRegex.test(e.target.parentElement.href)) {
+    e.preventDefault();
+    let alert = window.confirm('Are you sure you want to delete?');
+    if (alert) {
+      let id = e.target.parentElement.href.match(/\d+$/)[0];
+      contactsList.deleteContact(e, id);
+    }
+  }
+
+  if (e.target.textContent === 'Add Contact') {
+    tagList.addTagsToForm(createForm);
+
+    document.getElementById('create-contact').style.display = 'flex';
+    document.getElementById('no-contacts').style.display ='none';
+    document.getElementById('display-contacts').style.display ='none';
+
+  }
+
+  if (e.target.id === 'cancel-create-contact') {
+    document.getElementById('create-contact').style.display = 'none';
+    document.getElementById('display-contacts').style.display ='flex';
+
+    if (contactsList.contactsListEmpty()) {
+      document.getElementById('no-contacts').style.display ='flex';
+      document.getElementById('display-contacts').style.display ='none';
+    }
+  }
+
+  if (e.target.id === 'cancel-edit-contact') {
+    document.getElementById('edit-contact').style.display = 'none';
+    document.getElementById('display-contacts').style.display ='flex';
+
+    if (contactsList.contactsListEmpty()) {
+      document.getElementById('no-contacts').style.display ='flex';
+      document.getElementById('display-contacts').style.display ='none';
+    }
+  }
 }

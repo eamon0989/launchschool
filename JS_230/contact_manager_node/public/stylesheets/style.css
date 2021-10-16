@@ -157,7 +157,7 @@ button {
 }
 
 .display-contacts {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
@@ -194,5 +194,15 @@ button {
   border: 1px solid #e3e3e3;
   padding: 2rem;
   margin: 2rem 0;
+  border-radius: 4px;
+}
+
+#showing-filtered {
+  display: none;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  padding: 2rem;
+  margin-bottom: 1rem;
   border-radius: 4px;
 }

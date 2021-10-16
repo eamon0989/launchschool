@@ -25,6 +25,7 @@ class TagList {
       let tag = this.createTag(tagName);
       fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify(tag) });
+      alert(`${tagName} tag added!`)
     } else {
       alert('Tag already exists.')
     }
@@ -43,8 +44,6 @@ class TagList {
 
     tags.forEach(tag => {
       tag.contactsWithTag = tag.contactsWithTag.filter(contactId => Number(contactId) !== Number(id));
-      // fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
-      // body: JSON.stringify(tag) });
       fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify(tag) }).then(res => console.log(res.status));
     })
@@ -79,14 +78,11 @@ class TagList {
 
     tags.forEach(tag => {
       let option = document.createElement('option');
-      
       option.value = tag.tag_name;
       option.textContent = tag.tag_name;
       select.appendChild(option);
     })
   }
-
-
 }
 
 class Tag {
@@ -121,10 +117,7 @@ class ContactsList {
     fetch (`http://localhost:3000/api/contacts/${id}`, { method: 'DELETE' })
     .then(res => {
       if (res.status === 204) {
-        console.log(this.contacts);
-
         this.contacts.splice(index, 1);
-        console.log(id);
         tagList.removeFromContactsWithTag(id);
         e.target.parentElement.parentElement.parentElement.remove();
 
@@ -147,7 +140,7 @@ class ContactsList {
     let options = editTags.children;
 
     [...options].forEach(option => {
-      if (contact.tags.includes(option.textContent)) {
+      if (contact.tags?.includes(option.textContent)) {
         option.setAttribute('selected', 'selected');
       }
     })
@@ -170,7 +163,6 @@ class ContactsList {
     body: JSON.stringify(updatedContact)}).then(res => res.json());
     this.contacts.splice(this.contacts.indexOf(contact), 1, newContact);
     this.getTags(newContact);
-    console.log(newContact);
     this.displayContacts();
   }
 
@@ -202,6 +194,9 @@ class ContactsList {
   async getContactsFromServer() {
     fetch('/api/contacts').then(res => res.json())
     .then(contacts => {
+      if (contacts.length > 0) {
+        document.getElementById('display-contacts').style.display ='flex';
+      }
        contacts.forEach(async contact => {
         this.createContact(contact);
       })
@@ -249,22 +244,25 @@ class ContactsList {
       ul.removeChild(ul.lastElementChild);
     }
 
-    console.log(contacts);
     contacts.forEach(contact => {
-      console.log(contact);
       createContactCard(contact);
     })
 
     if (!this.contactsListEmpty()) {
       showContactsDiv();
+    } else {
+      document.getElementById('display-contacts').style.display ='none';
     }
   }
 
   displayContactsWithTag(tagName) {
     let tag = tagList.getTag(tagName);
-    console.log(tag);
+    let div = document.getElementById('showing-filtered');
+    let p = div.querySelector('p');
+    div.style.display = 'flex';
+    p.textContent = `Showing contacts with the tag: ${tagName}`;
+
     let contactsIds = tag.contactsWithTag;
-    console.log(contactsIds);
     let showContactsBtn = document.getElementById('show-all-contacts');
 
     let contacts = [];
@@ -272,6 +270,7 @@ class ContactsList {
       let contact = this.findContactById(id);
       contacts.push(contact);
     });
+
     showContactsBtn.removeAttribute('hidden');
     this.displayContacts(contacts);
   }
@@ -287,10 +286,6 @@ class ContactsList {
 
   contactsListEmpty() {
     return this.contacts.length === 0;
-  }
-
-  deleteAllContacts() {
-    // this.
   }
 }
 
@@ -345,9 +340,6 @@ function createContactCard(contact) {
       let a = document.createElement('a');
       div4.classList.add('tag-links');
       a.textContent = tag;
-      // let dd = document.createElement('dd');
-      // dd.textContent = tag;
-      // a.appendChild(dd);
       a.href = '#';
       div4.appendChild(a);
     })
