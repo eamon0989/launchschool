@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Contact Manager</title>
   <link rel="stylesheet" href="stylesheets/style.css">
   <link rel="stylesheet" href="stylesheets/reset.css">
   <script src="/javascripts/jquery.js"></script>
@@ -13,7 +13,7 @@
 <body>
   <header>
     <a href="#"><h1>Contact Manager</h1></a>
-    <h2>Using Backbone.js, Localstorage, RequireJS, Handlebar and Bootstrap</h2>
+    <h2>Using HTML, CSS, JavaScript and a lot of time and effort &#128513;</h2>
   </header>
   <div class="container">
     <div class="section add-contact">
@@ -43,9 +43,9 @@
       <form action="api/contacts/" method="POST" id="create-form">
         <fieldset>
           <ul>
-            <li><label for="full_name">Full name:</label><input class="input" type="text" name="full_name" id="full_name"></li>
-            <li><label for="email">Email address:</label><input class="input" type="text" name="email" id="email"></li>
-            <li><label for="phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="phone_number"></li>
+            <li><label for="full_name">Full name:</label><input class="input" type="text" name="full_name" id="full_name" required></li>
+            <li><label for="email">Email address:</label><input class="input" type="email" name="email" id="email" required></li>
+            <li><label for="phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="phone_number" required pattern="[\d+\-\s]+"></li>
             <li><label for="tags">Tags:</label><select class="input" multiple name="tags" id="create-contact-form-tags"></select></li>
             <li>
               <button type="submit">Submit</button>
@@ -65,9 +65,9 @@
         <fieldset>
           <ul>
             <li><label for="edit_id"></label><input class="input" hidden type="text" name="id" id="edit_id"></li>
-            <li><label for="edit_full_name">Full name:</label><input class="input" type="text" name="full_name" id="edit_full_name"></li>
-            <li><label for="edit_email">Email address:</label><input class="input" type="text" name="email" id="edit_email"></li>
-            <li><label for="edit_phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="edit_phone_number"></li>
+            <li><label for="edit_full_name">Full name:</label><input class="input" type="text" name="full_name" id="edit_full_name" required></li>
+            <li><label for="edit_email">Email address:</label><input class="input" type="email" name="email" id="edit_email" required></li>
+            <li><label for="edit_phone_number">Telephone number:</label><input class="input" type="text" name="phone_number" id="edit_phone_number" pattern="[\d+\-\s]+" required></li>
             <li><label for="edit_tags">Tags:</label><select class="input" multiple name="tags" id="edit_tags"></select></li>
             <li>
               <button type="submit">Submit</button>
@@ -83,7 +83,7 @@
       <form class="create-tags section" id="create-tag-form">
         <fieldset>
           <label for="create-tag">Create a new tag here:</label>
-          <input class="input" type="text" placeholder="Tag" name="create-tag" id="create-tag">
+          <input class="input" type="text" placeholder="Tag" name="create-tag" id="create-tag" min="1" >
         </fieldset>
         <button type="submit">Submit</button>
 
@@ -93,10 +93,12 @@
     <div id="no-matching-contacts">
       <p></p>
     </div>
+
+    <footer>
+      <p>Developed by <a target="_blank" href="http://eamon.eu">Eamon O'Callaghan</a> as part of a project for Launch School.</p>
+    </footer>
   </div>
 
-
-    
 <script type="module" src="/javascripts/app.js"></script>
 <script type="module" src="/javascripts/classes.js"></script>
 </body>

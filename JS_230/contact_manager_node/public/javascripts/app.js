@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', e => {
     contactsList.saveContactToServer(json);
     createForm.reset();
     createContactDiv.style.display = 'none';
+
+    //resets 'Showing contacts div' if open
+    let click = new Event('click');
+    showContactsBtn.dispatchEvent(click);
   })
 
   editForm.addEventListener('submit', e => {

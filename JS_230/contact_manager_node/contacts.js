@@ -37,10 +37,6 @@ app.post('/api/contacts', (req, res) => {
   }
 });
 
-app.get('/secret', function (req, res, next) {
-  console.log('Accessing the secret section ...')
-})
-
 app.post('/api/tags', (req, res) => {
   let tagAttrs = helpers.extractTagAttrs(req.body);
 
@@ -59,7 +55,6 @@ app.get('/api/tags', (req, res) => {
 app.put('/api/contacts/:id', (req, res) => {
   let contactAttrs = helpers.extractContactAttrs(req.body);
   let contact = contactManager.update(req.params['id'], contactAttrs);
-  // console.log(contact);
   if (contact) {
     res.status(201).json(contact);
   } else {
@@ -68,14 +63,10 @@ app.put('/api/contacts/:id', (req, res) => {
 });
 
 app.put('/api/tags', (req, res) => {
-  console.log('put tag');
-  let newTag = helpers.extractContactAttrs(req.body);
-  console.log(newTag);
-  let tag = contactManager.update(newTag);
-
-  console.log(tag);
+  let newTag = helpers.extractTagAttrs(req.body);
+  let tag = tagManager.update(newTag);
   if (tag) {
-    res.status(201).json(contact);
+    res.status(201).json(tag);
   } else {
     res.status(400).end();
   }

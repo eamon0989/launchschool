@@ -21,7 +21,9 @@ class TagList {
   }
 
   async postTagToServer(tagName) {
-    if (!this.tagAlreadyExists(tagName)) {
+    if (tagName.trim().length === 0) {
+      alert('Invalid tag');
+    } else if (!this.tagAlreadyExists(tagName)) {
       let tag = this.createTag(tagName);
       fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify(tag) });
@@ -44,8 +46,15 @@ class TagList {
 
     tags.forEach(tag => {
       tag.contactsWithTag = tag.contactsWithTag.filter(contactId => Number(contactId) !== Number(id));
+    })
+    this.updateTagsOnServer();
+  }
+
+  updateTagsOnServer() {
+    let tags = this.getTags();
+    tags.forEach(tag => {
       fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify(tag) }).then(res => console.log(res.status));
+      body: JSON.stringify(tag)});
     })
   }
 
@@ -154,7 +163,6 @@ class ContactsList {
   }
 
   async saveEditedContactToServer(updatedContact) {
-    console.log(updatedContact);
     let id = updatedContact.id;
     tagList.removeFromContactsWithTag(id);
     let contact = this.findContactById(id);
@@ -185,9 +193,11 @@ class ContactsList {
     let id = contact.id;
     tags.forEach(tag => {
       let tagObj = tagList.getTag(tag); 
-      tagObj.contactsWithTag.push(id);
-      fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify(tagObj) }).then(res => console.log(res.status));
+      if (!tagObj.contactsWithTag.includes(id)) {
+        tagObj.contactsWithTag.push(id);
+        fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(tagObj) });  
+      }
     })
   }
 
@@ -344,15 +354,6 @@ function createContactCard(contact) {
       div4.appendChild(a);
     })
   }
-
-
-
-
-
-
-
-
-
   
   let div3= document.createElement('div');
   li.appendChild(div3);
@@ -370,7 +371,6 @@ function createContactCard(contact) {
   div3.appendChild(deleteA);
   div3.classList.add('buttons-div');
   tagLinks = document.querySelectorAll('tag-links');
-
 }
 
 function showContactsDiv() {

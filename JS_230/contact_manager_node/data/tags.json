@@ -1,22 +1,16 @@
 [
   {
-    "tag_name": "Business",
+    "tag_name": "test",
     "contactsWithTag": []
   },
   {
-    "tag_name": "Work",
-    "contactsWithTag": []
+    "tag_name": "testing123",
+    "contactsWithTag": [
+      1
+    ]
   },
   {
-    "tag_name": "Football",
-    "contactsWithTag": []
-  },
-  {
-    "tag_name": "School",
-    "contactsWithTag": []
-  },
-  {
-    "tag_name": "Coding",
+    "tag_name": "new tagger",
     "contactsWithTag": []
   }
 ]
