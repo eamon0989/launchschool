@@ -35,6 +35,28 @@ const tagManager = {
     return newTag;
   },
 
+  update: function(newTag) {
+    let collection = this.getAll();
+    console.log(collection);
+    console.log(newTag);
+    let newCollection;
+    let updatedTag;
+    if (collection.map(tag => tag.tag_name).includes(newTag.tag_name)) {
+      newCollection = collection.map(function(tag) {
+        if (tag.tag_name === newTag.tag_name) {
+          updatedTag = Object.assign({}, tagName);
+          return updatedTag;
+        }
+        return contact;
+      });
+      console.log(newCollection);
+      this.write(newCollection);
+      return updatedContact;
+    } else {
+      return false;
+    }
+  },
+
   // remove: function(contactId) {
   //   contactId = Number(contactId);
   //   let collection = this.getAll();

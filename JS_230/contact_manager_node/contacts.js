@@ -59,7 +59,22 @@ app.get('/api/tags', (req, res) => {
 app.put('/api/contacts/:id', (req, res) => {
   let contactAttrs = helpers.extractContactAttrs(req.body);
   let contact = contactManager.update(req.params['id'], contactAttrs);
+  // console.log(contact);
   if (contact) {
+    res.status(201).json(contact);
+  } else {
+    res.status(400).end();
+  }
+});
+
+app.put('/api/tags', (req, res) => {
+  console.log('put tag');
+  let newTag = helpers.extractContactAttrs(req.body);
+  console.log(newTag);
+  let tag = contactManager.update(newTag);
+
+  console.log(tag);
+  if (tag) {
     res.status(201).json(contact);
   } else {
     res.status(400).end();

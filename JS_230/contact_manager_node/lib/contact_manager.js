@@ -51,6 +51,7 @@ const contactManager = {
   update: function(contactId, contactAttrs) {
     contactId = Number(contactId);
     let collection = this.getAll();
+    // console.log(collection);
     let newCollection;
     let updatedContact;
     if (collection.map(c => c.id).includes(contactId)) {
@@ -61,6 +62,7 @@ const contactManager = {
         }
         return contact;
       });
+      // console.log(newCollection);
       this.write(newCollection);
       return updatedContact;
     } else {

@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', e => {
   let createForm = document.getElementById('create-form');
   let createContactDiv = document.getElementById('create-contact');
   let editForm = document.getElementById('edit-form');
+  let editFormDiv = document.getElementById('edit-contact');
   let tagForm = document.getElementById('create-tag-form');
   let showContactsBtn = document.getElementById('show-all-contacts');
   let searchBox = document.getElementById('search_bar');
 
   tagList.getTags();
-  // let tagLinks = document.querySelectorAll('tag-links');
 
   createForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -39,12 +39,21 @@ document.addEventListener('DOMContentLoaded', e => {
     let json = {};
 
     for (let prop of data) {
-      json[prop[0]] = prop[1];
+      console.log(prop);
+      if (!json[prop[0]]) {
+        json[prop[0]] = prop[1];
+      } else {
+        json[prop[0]] += `,${prop[1]}`;
+      }
+    }
+
+    if (!json.tags) {
+      json.tags = '';
     }
 
     contactsList.saveEditedContactToServer(json);
     editForm.reset();
-    editForm.style.display = 'none';
+    editFormDiv.style.display = 'none';
   })
 
 
@@ -59,15 +68,13 @@ document.addEventListener('DOMContentLoaded', e => {
     alert(`${tag} tag added!`)
   })
 
-  // let searchTerm = '';
-
   searchBox.addEventListener('keyup', e => {
     let searchTerm = e.target.value;
-    // console.log(e.target.value);
     contactsList.searchContacts(searchTerm);
   })
 
   document.addEventListener('click', e => {
+    // e.preventDefault();
     if (e.target.nodeName === 'BUTTON') {
       let editRegex = new RegExp('/contacts/edit/', 'gi');
       if (editRegex.test(e.target.parentElement.href)) {
@@ -116,15 +123,9 @@ document.addEventListener('DOMContentLoaded', e => {
     }
 
     if (e.target.nodeName === 'A') {
-      // console.log(e.target.parentElement.classList);
-      console.log(e.target);
-      console.log(e.target.parentElement.firstElementChild.nodeName === 'DL');
-
       if (e.target.parentElement.firstElementChild.nodeName === 'DL') {
-        console.log(e.target);
         e.preventDefault();
         let tagName = e.target.textContent;
-        console.log('test');
         contactsList.displayContactsWithTag(tagName);
       }
     }

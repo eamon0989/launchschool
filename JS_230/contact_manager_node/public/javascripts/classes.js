@@ -38,6 +38,18 @@ class TagList {
     return this.tags;
   }
 
+  removeFromContactsWithTag(id) {
+    let tags = tagList.getTags();
+
+    tags.forEach(tag => {
+      tag.contactsWithTag = tag.contactsWithTag.filter(contactId => Number(contactId) !== Number(id));
+      // fetch('/api/tags/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
+      // body: JSON.stringify(tag) });
+      fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(tag) }).then(res => console.log(res.status));
+    })
+  }
+
   async getTagsFromServer() {
     return await fetch('/api/tags')
       .then(res => res.json())
@@ -112,7 +124,11 @@ class ContactsList {
     fetch (`http://localhost:3000/api/contacts/${id}`, { method: 'DELETE' })
     .then(res => {
       if (res.status === 204) {
+        console.log(this.contacts);
+
         this.contacts.splice(index, 1);
+        console.log(id);
+        tagList.removeFromContactsWithTag(id);
         e.target.parentElement.parentElement.parentElement.remove();
 
         if (this.contactsListEmpty()) {
@@ -131,26 +147,37 @@ class ContactsList {
     let editPhone = document.getElementById('edit_phone_number');
     let editTags = document.getElementById('edit_tags');
     let editId = document.getElementById('edit_id');
+    let options = editTags.children;
+
+    [...options].forEach(option => {
+      if (contact.tags.includes(option.textContent)) {
+        option.setAttribute('selected', 'selected');
+      }
+    })
+
     editName.value = contact.full_name;
     editEmail.value = contact.email;
     editPhone.value = contact.phone_number;
-    editTags.value = contact.tags;
     editId.value = contact.id;
     form.style.display = 'flex';
     document.getElementById('display-contacts').style.display = 'none';
   }
 
   async saveEditedContactToServer(updatedContact) {
+    console.log(updatedContact);
     let id = updatedContact.id;
+    tagList.removeFromContactsWithTag(id);
     let contact = this.findContactById(id);
 
     let newContact = await fetch(`/api/contacts/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, 
     body: JSON.stringify(updatedContact)}).then(res => res.json());
     this.contacts.splice(this.contacts.indexOf(contact), 1, newContact);
+    this.getTags(newContact);
+    console.log(newContact);
     this.displayContacts();
   }
 
-  async createContact(contactObject) {
+  createContact(contactObject) {
     let contact = new Contact(contactObject);
     this.contacts.push(contact);
     this.getTags(contact);
@@ -166,12 +193,12 @@ class ContactsList {
       tags = [];
     }
 
-    // let tags = contact.tags?.split(',');
     let id = contact.id;
     tags.forEach(tag => {
       let tagObj = tagList.getTag(tag); 
       tagObj.contactsWithTag.push(id);
-      // console.log(tagObj);
+      fetch('/api/tags', { method: "PUT", headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(tagObj) }).then(res => console.log(res.status));
     })
   }
 
@@ -229,8 +256,9 @@ class ContactsList {
       ul.removeChild(ul.lastElementChild);
     }
 
+    console.log(contacts);
     contacts.forEach(contact => {
-      // console.log(contact);
+      console.log(contact);
       createContactCard(contact);
     })
 
@@ -241,7 +269,9 @@ class ContactsList {
 
   displayContactsWithTag(tagName) {
     let tag = tagList.getTag(tagName);
+    console.log(tag);
     let contactsIds = tag.contactsWithTag;
+    console.log(contactsIds);
     let showContactsBtn = document.getElementById('show-all-contacts');
 
     let contacts = [];
@@ -276,7 +306,6 @@ export let tagList = new TagList();
 export let tagLinks;
 
 function createContactCard(contact) {
-  // console.log(contact);
   let ul = document.getElementById('contacts-list');
   let li = document.createElement('li');
   li.classList.add('contacts-list-items')

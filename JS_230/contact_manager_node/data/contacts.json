@@ -3,56 +3,14 @@
     "full_name": "Eamon O Callaghansdf",
     "phone_number": "631002624",
     "email": "eamon0989@gmail.com",
-    "tags": "Business",
-    "id": 2
+    "tags": "School,Coding,new tagger,test",
+    "id": 1
   },
   {
-    "full_name": "Paula Cristin lopez Paredes123",
+    "full_name": "Paulaasdfasdff",
     "phone_number": "631002624",
     "email": "eamon0989@gmail.com",
-    "tags": "Business",
-    "id": 3
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": "Business,Work,Football",
+    "tags": "Coding,new tagger",
     "id": 4
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": "Work",
-    "id": 5
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": "Football",
-    "id": 7
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": null,
-    "id": 8
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": "School",
-    "id": 10
-  },
-  {
-    "full_name": "Eamon O Callaghan",
-    "phone_number": "631002624",
-    "email": "eamon0989@gmail.com",
-    "tags": "Business,Work,Football,School,Coding",
-    "id": 11
   }
 ]
